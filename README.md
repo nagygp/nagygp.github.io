@@ -1,5 +1,4 @@
 # Gábor P. Nagy personal GitHub page
-### nagygp.github.io
 
 ## GitHub projects
 
@@ -13,4 +12,5 @@
 ### Teaching materials
 
 * [Gaussian Elimination Demo](https://nagygp.github.io/matrix-algorithms/GaussianElimination.html)
-* [Jacobi Diaginalization Demo](https://nagygp.github.io/matrix-algorithms/DiagonalizationJacobi.html)
+* [Jacobi Diagonalization Demo](https://nagygp.github.io/matrix-algorithms/DiagonalizationJacobi.html)
+* [Catenary Demo](https://nagygp.github.io/Demos/Catenary.html)
