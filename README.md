@@ -12,4 +12,4 @@
 * [Gaussian Elimination Demo](https://nagygp.github.io/matrix-algorithms/GaussianElimination.html)
 * [Jacobi Diagonalization Demo](https://nagygp.github.io/matrix-algorithms/DiagonalizationJacobi.html)
 * [Catenary Curve Demo](https://nagygp.github.io/Demos/Catenary.html)
-* Error Correcting Codes Demo | [In English](https://nagygp.github.io/Demos/coding_demo_en.html) | [In Hungarian](https://nagygp.github.io/Demos/coding_demo_en.html)
+* [Error Correcting Codes Demo](https://nagygp.github.io/Demos/coding_demo_en.html)
