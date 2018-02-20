@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Error correcting codes -- a demonstration</title>
+
+<script src="ErrorCorrectionLinCode.js" type="text/javascript"></script>
+
+<script language=JavaScript type="text/javascript">
+
+var mplain="";
+var mdig = new Array();
+var mdig_str ="";
+var mdig_enc = new Array();
+
+function preparation() {
+	alphabet = document.getElementById("alphabet").firstChild.nodeValue;
+	mplain = document.getElementById("hamlet_text").firstChild.nodeValue;
+	mdig = plaintext2binseq(mplain);
+	mdig_str = binseq2string(mdig,7,7,25);
+
+	document.getElementById("alphabet_length").firstChild.nodeValue=alphabet.length;
+	document.getElementById("message_length").firstChild.nodeValue=mplain.length;
+	document.getElementById("mdig_length").firstChild.nodeValue=mdig.length;
+	document.getElementById("hamlet_digital").firstChild.nodeValue=mdig_str;
+
+	set_noisy_message();
+	repcode_encoding_demo();
+	hamming_encoding_demo();
+	golay_encoding_demo();
+}
+
+function set_noisy_message() {
+	var p = document.getElementById("error_prob").value/100;
+	var x=noise(mdig,p);
+	mdig_n = x[0];
+	mplain_n = binseq2plaintext(mdig_n);
+	mdig_n_str = binseq2string(mdig_n,7,7,25);
+	document.getElementById("noisy_message").innerHTML=color_diff_text(mplain_n,mplain);;
+	document.getElementById("nmessage_digital").innerHTML=color_diff_text(mdig_n_str,mdig_str);;
+	document.getElementById("bits_changed").innerHTML=(100*x[1]/mdig.length).toFixed(2);
+	var y=hamming_distance(mplain,mplain_n)/mplain.length;
+	document.getElementById("letters_changed").innerHTML=(100*y).toFixed(2);
+}
+
+String.prototype.trim = function () {
+    return this.replace(/^\s*/, "").replace(/\s*$/, "");
+}
+
+function read_generator_matrix(id) {
+	var x = document.getElementById(id).innerHTML;//split("\n");
+	x=x.split("<br>");
+	for (var i=0;i<x.length;i++) { x[i]=x[i].trim(); }
+	generator_matrix = new Array();
+	for (var i=0; i<x.length; ++i) {
+		generator_matrix[i] = new Array();
+	}
+	for (var i=0; i<x.length; ++i) {
+		for (var j=0; j<x[i].length; ++j) {
+			generator_matrix[i][j]=parseInt(x[i][j]);
+		}
+	}
+}
+
+function repcode_encoding_demo() {
+	document.getElementById("message_digital_repet").innerHTML=binseq2string(mdig,8,6,15);
+	read_generator_matrix('repcode_genmatrix');
+	set_code(generator_matrix);
+	mdig_enc=encoding(mdig);
+	mdig_enc_str=binseq2string(mdig_enc,24,2,15);
+
+	document.getElementById("message_digital_enc_repet").innerHTML=mdig_enc_str;
+	document.getElementById("code_length").innerHTML=code_len;
+	document.getElementById("code_dimension").innerHTML=code_dim;
+}
+
+function repcode_decoding_demo() {
+	read_generator_matrix('repcode_genmatrix');
+	set_code(generator_matrix);
+	mdig_enc=encoding(mdig);
+	mdig_enc_str=binseq2string(mdig_enc,24,2,15);
+
+	var p = document.getElementById("error_prob").value/100;
+	var x = noise(mdig_enc,p);
+	mdig_enc_n = x[0];
+	mdig_enc_n_str = binseq2string(mdig_enc_n,24,2,15);
+	var corr_mdig_enc_n=decoding(mdig_enc_n);
+	var corr_mplain=binseq2plaintext(corr_mdig_enc_n);
+
+	document.getElementById("nm_enc_repet").innerHTML = color_diff_text(mdig_enc_n_str,mdig_enc_str);
+	document.getElementById("corr_nm_enc_repet").innerHTML=color_diff_text(corr_mplain,mplain);
+	document.getElementById("bits_changed_code").innerHTML=(100*x[1]/mdig_enc.length).toFixed(2);
+	var y=hamming_distance(mplain,corr_mplain)/mplain.length;
+	document.getElementById("letters_changed_code").innerHTML=(100*y).toFixed(2);
+}
+
+function golay_encoding_demo() {
+	document.getElementById("message_digital_golay").innerHTML=binseq2string(mdig,12,4,15);
+	read_generator_matrix('golay_genmatrix');
+	set_code(generator_matrix);
+	mdig_enc=encoding(mdig);
+	mdig_enc_str=binseq2string(mdig_enc,24,2,15);
+
+	var x=document.getElementById("message_digital_enc_golay").innerHTML=mdig_enc_str;
+	document.getElementById("gcode_length").innerHTML=code_len;
+	document.getElementById("gcode_dimension").innerHTML=code_dim;
+}
+
+function golay_decoding_demo() {
+	read_generator_matrix('golay_genmatrix');
+	set_code(generator_matrix);
+	mdig_enc=encoding(mdig);
+	mdig_enc_str=binseq2string(mdig_enc,24,2,15);
+
+	var p = document.getElementById("error_prob").value/100;
+	var x = noise(mdig_enc,p);
+	mdig_enc_n = x[0];
+	mdig_enc_n_str = binseq2string(mdig_enc_n,24,2,15);
+	var corr_mdig_enc_n=decoding(mdig_enc_n);
+	var corr_mplain=binseq2plaintext(corr_mdig_enc_n);
+
+	document.getElementById("nm_enc_golay").innerHTML = color_diff_text(mdig_enc_n_str,mdig_enc_str);
+	document.getElementById("corr_nm_enc_golay").innerHTML=color_diff_text(corr_mplain,mplain);
+	document.getElementById("bits_changed_gcode").innerHTML=(100*x[1]/mdig_enc.length).toFixed(2);
+	var y=hamming_distance(mplain,corr_mplain)/mplain.length;
+	document.getElementById("letters_changed_gcode").innerHTML=(100*y).toFixed(2);
+}
+
+function hamming_encoding_demo() {
+	document.getElementById("message_digital_hamming").innerHTML=binseq2string(mdig,4,10,15);
+	read_generator_matrix('hamming_genmatrix');
+	set_code(generator_matrix);
+	mdig_enc=encoding(mdig);
+	mdig_enc_str=binseq2string(mdig_enc,7,6,15);
+
+	var x=document.getElementById("message_digital_enc_hamming").innerHTML=mdig_enc_str;
+	document.getElementById("hcode_length").innerHTML=code_len;
+	document.getElementById("hcode_dimension").innerHTML=code_dim;
+}
+
+function hamming_decoding_demo() {
+	read_generator_matrix('hamming_genmatrix');
+	set_code(generator_matrix);
+	mdig_enc=encoding(mdig);
+	mdig_enc_str=binseq2string(mdig_enc,7,2,15);
+
+	var p = document.getElementById("error_prob").value/100;
+	var x = noise(mdig_enc,p);
+	mdig_enc_n = x[0];
+	mdig_enc_n_str = binseq2string(mdig_enc_n,7,2,15);
+	var corr_mdig_enc_n=decoding(mdig_enc_n);
+	var corr_mplain=binseq2plaintext(corr_mdig_enc_n);
+
+	document.getElementById("nm_enc_hamming").innerHTML = color_diff_text(mdig_enc_n_str,mdig_enc_str);
+	document.getElementById("corr_nm_enc_hamming").innerHTML=color_diff_text(corr_mplain,mplain);
+	document.getElementById("bits_changed_hcode").innerHTML=(100*x[1]/mdig_enc.length).toFixed(2);
+	var y=hamming_distance(mplain,corr_mplain)/mplain.length;
+	document.getElementById("letters_changed_hcode").innerHTML=(100*y).toFixed(2);
+}
+
+</script>
+
+</head>
+
+<body onload="javascript:preparation()">
+
+<h1>Error Correcting Codes -- a Demonstration (<a href="coding_demo_hu.html">switch to Hungarian</a>)</h1>
+
+<p>By <a href="http://www.math.u-szeged.hu/~nagyg">Gábor P. Nagy</a>, <a href="http://www.u-szeged.hu">University of Szeged</a> <a href="http://www.math.u-szeged.hu/">Bolyai Institute</a>.</p>
+
+<h2>Content</h2>
+
+<ol>
+	<li><a href="#F1">The Goal</a></li>
+	<li><a href="#F2">The Alphabet</a></li>
+	<li><a href="#F3">The Message</a></li>
+	<li><a href="#F4">The Noise</a></li>
+	<li><a href="#F5">Encoding with the Repetion Code</a></li>
+	<li><a href="#F6">Decoding with the Repetion Code</a></li>
+	<li><a href="#F7">Encoding with the Hamming Code</a></li>
+	<li><a href="#F8">Decoding with the Hamming Code</a></li>
+	<li><a href="#F9">Encoding with the extended Golay Code</a></li>
+	<li><a href="#F10">Decoding with the extended Golay Code</a></li>
+	<li><a href="#F11">Conclusion</a></li>
+</ol>
+
+<hr /><h2><a name="F1">The Goal</a></h2>
+
+<p>An <strong>Alphabet</strong> is a finite set of symbols. We want to transmit a <strong>text message,</strong> written with the given alphabet, between <strong>digital devices.</strong></p>
+<p>During transmission, a <strong>noise</strong> causes that the sent and received sequence of symbols differ. </p>
+<p>Our goal is to find methods which are able to correct high percentage of the occuring errors. </p>
+
+
+
+<h2><a name="F2">The Alphabet</h2>
+<pre>[<span id="alphabet"> aábcdeéfghiíjklmnoóöőpqrstuúüűvwxyzAÁBCDEÉFGHIÍJKLMNOÓÖŐPQRTSUÚÜŰVWXYZ
+0123456789.,:;?!()+-*/=€$'******************************</span>]</pre>
+
+<p>The number of admitted letters: <b><span id="alphabet_length">&nbsp;</span>.</b></p>
+
+<h2><a name="F3">The Message</h2>
+
+<table border=1>
+	<colgroup>
+		<col width="350">
+		<col width="350">
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Plain text</th>
+			<th>Digitalized text</th>
+		</tr>
+	</thead>
+<tbody>
+<tr><td valign="top"><div style="width:350pt;overflow:auto;">
+<pre id="hamlet_text">
+John Lennon: Imagine
+
+Imagine there's no heaven
+It's easy if you try
+No hell below us
+Above us only sky
+Imagine all the people
+Living for today...
+
+Imagine there's no countries
+It isn't hard to do
+Nothing to kill or die for
+And no religion too
+Imagine all the people
+Living life in peace...
+
+You may say I'm a dreamer
+But I'm not the only one
+I hope someday you'll join us
+And the world will be as one
+
+Imagine no possessions
+I wonder if you can
+No need for greed or hunger
+A brotherhood of man
+Imagine all the people
+Sharing all the world...
+
+You may say I'm a dreamer
+But I'm not the only one
+I hope someday you'll join us
+And the world will live as one</pre>
+</div></td>
+<td valign="top"><div style="width:350pt;height:450pt;overflow:auto;white-space:nowrap;">
+<pre id="hamlet_digital">&nbsp;</pre>
+</div></td></tr>
+</tbody></table>
+
+<p>Length of the plain text message: <b><span id="message_length">&nbsp;</span>.</b>
+Bit length of the digitalized text: <b><span id="mdig_length">&nbsp;</span>.</b></p>
+
+<h2><a name="F4">The Noise</h2>
+
+<form action="javascript:set_noisy_message()">
+Input the error probability per bit in percent: 
+<input type=text size=2 value=3 maxlength=2 id="error_prob">%
+<input type=submit value="Generate noisy message">
+</form>
+
+<p>Ratio of bits changed by the noise: <b><span id="bits_changed">0</span>%.</b> 
+Ratio of letters changed by the noise: <b><span id="letters_changed">0</span>%.</b></p>
+
+<p><strong>Can you explain this?</strong></p>
+
+<table border=1>
+	<colgroup>
+		<col width="350">
+		<col width="350">
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Noisy plain text</th>
+			<th>Noisy digitalized text</th>
+		</tr>
+	</thead>
+<tbody>
+<tr><td align="top"><div id="noisy_message" 
+style="width:350pt;height:450pt;overflow:auto;white-space:nowrap;">&nbsp;</div>
+</td><td valign="top">
+<div id="nmessage_digital"
+style="width:350pt;height:450pt;overflow:auto;white-space:nowrap;">&nbsp;</div></td></tr>
+</tbody></table>
+
+
+
+<h2><a name="F5">Encoding with Repetition Code</h2>
+
+<p><strong>The trick: </strong>Repeat every bit three times!</p>
+<p><strong>The price: </strong>You have to transmit a three times longer binary sequence.</p>
+
+<table border=1>
+<tr>
+	<td><strong>The parameters of the repetition code</strong></td
+</tr>
+<tr>
+	<td>Length of the code:</td>
+	<td align=center><b><span id="code_length">0</span></b></td>
+</tr>
+<tr>
+	<td>Dimension of the code:</td>
+	<td align=center><b><span id="code_dimension">0</span></b></td>
+</tr>
+<tr>
+	<td>The generator matrix:</td>
+	<td>
+		<div style="border: 1px solid black; padding: 3pt;margin:3pt">
+<!-- Separate matrix rows with <br> -->
+		<code id="repcode_genmatrix">
+1<br>
+1<br>
+1
+</code>
+		</div>
+	</td>
+</tr>
+</table>
+
+
+<p/>
+
+<table border=1>
+	<colgroup>
+		<col width="450">
+		<col width="450">
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Digitalized text</th>
+			<th>Digitalized text encoded with repetition code</th>
+		</tr>
+	</thead>
+<tbody><tr>
+<td valign="top"><pre id="message_digital_repet">&nbsp;</pre></td>
+<td valign="top"><pre id="message_digital_enc_repet">&nbsp;</pre></td>
+</tr></tbody></table>
+
+
+<h2><a name="F6">Decoding with Repetition Code</h2>
+
+<form action="javascript:repcode_decoding_demo()">
+<input type=submit value="Correct the noisy encoded message using the repetition code!">
+</form>
+
+<p>Ratio of bits changed by the noise: <b><span id="bits_changed_code">0</span>%.</b> 
+Ratio of letters changed by the noise: <b><span id="letters_changed_code">0</span>%.</b></p>
+
+<table border=1>
+	<colgroup>
+		<col width="450">
+		<col width="450">
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Noisy encoded digital text</th>
+			<th>Error corrected noisy encoded text</th>
+		</tr>
+	</thead>
+<tbody><tr>
+<td valign="top"><code><span id="nm_enc_repet">&nbsp;</span></code></td>
+<td valign="top"><p id="corr_nm_enc_repet">&nbsp;</p></td>
+</tr></tbody></table>
+
+<!-----Hamming START------------>
+
+<hr>
+
+<h2><a name="F7">Encoding with the Hamming Code</h2>
+
+<p>Can we do that better? <strong>YES! Use the Hamming code.</strong>
+<p><strong>The price: </strong>You have to transmit a 7/4-times longer binary sequence.</p>
+
+<table border=1>
+<tr>
+	<td><strong>The parameters of the repetition code</strong></td
+</tr>
+<tr>
+	<td>Length of the code:</td>
+	<td align=center><b><span id="hcode_length">0</span></b></td>
+</tr>
+<tr>
+	<td>Dimension of the code:</td>
+	<td align=center><b><span id="hcode_dimension">0</span></b></td>
+</tr>
+<tr>
+	<td>The generator matrix:</td>
+	<td>
+		<div style="border: 1px solid black; padding: 3pt;margin:3pt">
+<!-- Separate matrix rows with <br> and make no whitespaces -->
+		<code id="hamming_genmatrix">
+1000<br>
+0100<br>
+0010<br>
+0001<br>
+1101<br>
+1011<br>
+0111
+</code>
+		</div>
+	</td>
+</tr>
+</table>
+
+
+<p/>
+
+<table border=1>
+	<colgroup>
+		<col width="450">
+		<col width="450">
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Digitalized text</th>
+			<th>Digitalized text encoded with Hamming code</th>
+		</tr>
+	</thead>
+<tbody><tr>
+<td valign="top"><pre id="message_digital_hamming">&nbsp;</pre></td>
+<td valign="top"><pre id="message_digital_enc_hamming">&nbsp;</pre></td>
+</tr></tbody></table>
+
+
+<h2><a name="F8">Decoding with the Hamming Code</h2>
+
+<form action="javascript:hamming_decoding_demo()">
+<input type=submit value="Correct the noisy encoded message using the Hamming code!">
+</form>
+
+<p>Ratio of bits changed by the noise: <b><span id="bits_changed_hcode">0</span>%.</b> 
+Ratio of letters changed by the noise: <b><span id="letters_changed_hcode">0</span>%.</b></p>
+
+<p>While the threefold repetition code corrects <b>1</b> error per codeword (of length 3), 
+the Golay code corrects <b>1</b> errors per codewords (of length 7).</p>
+
+<table border=1>
+	<colgroup>
+		<col width="450">
+		<col width="450">
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Noisy encoded digital text</th>
+			<th>Error corrected noisy encoded text</th>
+		</tr>
+	</thead>
+<tbody><tr>
+<td valign="top"><code><span id="nm_enc_hamming">&nbsp;</span></code></td>
+<td valign="top"><p id="corr_nm_enc_hamming">&nbsp;</p></td>
+</tr></tbody></table>
+
+<!-----Hamming END------------>
+
+<!-----Golay START------------>
+
+<hr>
+
+<h2><a name="F9">Encoding with the extended Golay Code</h2>
+
+<p>Can we do that better? <strong>YES! Use the (extended) Golay code.</strong>
+<p><strong>The price: </strong>You have to transmit a twice longer binary sequence.</p>
+
+<!--<form action="javascript:golay_encoding_demo()">-->
+<!--<input type=submit value="Correct the noisy encoded message using the repetition code!">-->
+<!--</form><br />-->
+
+<table border=1>
+<tr>
+	<td><strong>The parameters of the repetition code</strong></td
+</tr>
+<tr>
+	<td>Length of the code:</td>
+	<td align=center><b><span id="gcode_length">0</span></b></td>
+</tr>
+<tr>
+	<td>Dimension of the code:</td>
+	<td align=center><b><span id="gcode_dimension">0</span></b></td>
+</tr>
+<tr>
+	<td>The generator matrix:</td>
+	<td>
+		<div style="border: 1px solid black; padding: 3pt;margin:3pt">
+<!-- Separate matrix rows with <br> and make no whitespaces -->
+		<code id="golay_genmatrix">
+100000000000<br>
+010000000000<br>
+101000000000<br>
+010100000000<br>
+101010000000<br>
+110101000000<br>
+111010100000<br>
+011101010000<br>
+001110101000<br>
+000111010100<br>
+100011101010<br>
+110001110101<br>
+011000111010<br>
+001100011101<br>
+000110001110<br>
+000011000111<br>
+000001100011<br>
+000000110001<br>
+000000011000<br>
+000000001100<br>
+000000000110<br>
+000000000011<br>
+000000000001<br>
+111111111111
+</code>
+		</div>
+	</td>
+</tr>
+</table>
+
+
+<p/>
+
+<table border=1>
+	<colgroup>
+		<col width="450">
+		<col width="450">
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Digitalized text</th>
+			<th>Digitalized text encoded with extended Golay code</th>
+		</tr>
+	</thead>
+<tbody><tr>
+<td valign="top"><pre id="message_digital_golay">&nbsp;</pre></td>
+<td valign="top"><pre id="message_digital_enc_golay">&nbsp;</pre></td>
+</tr></tbody></table>
+
+
+<h2><a name="F10">Decoding with the extended Golay Code</h2>
+
+<form action="javascript:golay_decoding_demo()">
+<input type=submit value="Correct the noisy encoded message using the extended Golay code!">
+</form>
+
+<p>Ratio of bits changed by the noise: <b><span id="bits_changed_gcode">0</span>%.</b> 
+Ratio of letters changed by the noise: <b><span id="letters_changed_gcode">0</span>%.</b></p>
+
+<p>While the threefold repetition code corrects <b>1</b> error per codeword (of length 3), 
+the Golay code corrects <b>3</b> errors per codewords (of length 24).</p>
+
+<table border=1>
+	<colgroup>
+		<col width="450">
+		<col width="450">
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Noisy encoded digital text</th>
+			<th>Error corrected noisy encoded text</th>
+		</tr>
+	</thead>
+<tbody><tr>
+<td valign="top"><code><span id="nm_enc_golay">&nbsp;</span></code></td>
+<td valign="top"><p id="corr_nm_enc_golay">&nbsp;</p></td>
+</tr></tbody></table>
+
+<h2><a name="F11">Conclusion</h2>
+
+<ul>
+	<li>The fault tolerance of our communication depends on the message and the alphabet used. These determine the level of the neccessary error correction.</li>
+	<li>All error correction methods have their price, namely the proportion of the transmitted redundant symbols.</li>
+	<li>The optimal coding method is scalable, that is, it can be adjusted to other parameters of the communication.</li>
+</ul>
+
+</body>
+</html>
+
+
+

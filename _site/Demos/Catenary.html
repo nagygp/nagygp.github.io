@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Catenary curve animation</title>
+</head>
+<body onload="javascript:onload_draw()">
+
+<h2>Catenary curve animation</h2>
+
+<p>For the mathematical background, please read the <a href="http://en.wikipedia.org/wiki/Catenary">Wikipedia page</a> on catenary curves.</p>
+
+<h3>Changing the parameters of the chain</h3>
+
+<div id="param_setting" style="width:90%;background-color:lightgray;">
+<p><table><tr>
+<td>Number of zigzags: 2 &le; <strong><span id="zigzags">20</span></strong> &le; 50</td>
+<td><button onclick="javascript:var_n(1)" style="width:100pt;height:30pt;">Zigzag +1</button></td>
+<td><button onclick="javascript:var_n(-1)" style="width:100pt;height:30pt;">Zigzag -1</button></td>
+</tr></table></p>
+
+<p><table><tr>
+<td>Length of the chain (w.r.t. the canvas width): 120% &le; <strong><span id="curve_len">180</span>%</strong> &le; 300%</td>
+<td><button onclick="javascript:var_length(0.1)" style="width:100pt;height:30pt;">Length +10%</button></td>
+<td><button onclick="javascript:var_length(-0.1)" style="width:100pt;height:30pt;">Length -10%</button></td>
+</tr></table></p>
+</div>
+
+<p></p>
+<p></p>
+
+<h3>The animation</h3>
+
+<div style="width:90%;background-color:lightgray;">
+<p>The animation stops when the potential energy grows or decreases by &le;<input type=text size=4 value=0.1 maxlength=10 id="min_gradlen" />.</p>
+<p>The full potential energy of the chain is <strong>E=<span id="energy">--</span>.</p></strong>
+<p>The maximum norm of the gradient vector is <strong>|&nabla;|=<span id="gradlen">--</span>.</p></strong>
+</div>
+
+<table>
+<tr><td>
+<button onclick="javascript:start_animation()" style="width:300pt;height:50pt;">Start animation</button>
+</td></tr>
+<tr><td>
+<button onclick="javascript:reset_chain()" style="width:300pt;height:20pt;">Reset chain</button>
+</td></tr>
+<tr><td>
+<button onclick="javascript:stop_cont_animation()" id="stop_cont_button" style="width:150pt;height:30pt;">Stop animation</button>
+<button onclick="javascript:step_animation()" style="width:150pt;height:30pt;">Step animation</button>
+</td></tr>
+<tr><td align="center"><form><input id="show_hide_button" type="checkbox" checked="checked" onclick="javascript:draw_chain()">Show catenary curve</form>
+</td></tr>
+</table>
+
+<p><span id="info"></span></p>
+
+<canvas width="400" height="500" id="my_catenary" style="border:1px solid #000000;"></canvas>
+
+
+<hr />
+<p>Copyright by &copy; <a href="http://www.math.u-szeged.hu/~nagyg/">Gábor P. Nagy</a>, 2012.</p>
+
+<script type="text/javascript" >
+// Defining global variables
+var ctx=document.getElementById("my_catenary").getContext("2d");
+var canvas_width=document.getElementById("my_catenary").width;
+var anim_state="not started";
+var catenary_param;
+var clength_cwidth_ratio;
+var n; 	// Number of zigzags
+var d;	// Length of stocks
+var energy;
+var alpha;
+var grad_len;
+var inter;
+var iter_time;
+var slope;
+
+// Setting the main variables
+
+function newton(w,l,eps) {
+	var x0=2.0/w;
+	var delta=eps+1;
+	while (Math.abs(delta)>eps) {
+		delta=x0;
+		x0=x0-(l*x0-(Math.exp(w*x0)-Math.exp(-w*x0))/2)/(l-w*(Math.exp(w*x0)+Math.exp(-w*x0))/2);
+		delta-=x0;
+	}
+	return 1/x0/2;
+}
+
+function init_global_vars() {
+	clength_cwidth_ratio=parseFloat(document.getElementById("curve_len").innerHTML)/100.0;
+	n=parseInt(document.getElementById("zigzags").innerHTML);
+	clength=canvas_width*0.9*clength_cwidth_ratio;
+	alpha=Math.acos(1.0/clength_cwidth_ratio);
+	d=clength/n/2;
+   catenary_param=newton(0.9*canvas_width,clength,1e-10);
+	iter_time=10;
+//	document.getElementById("show_hide_button").checked=true;
+}
+
+function init_curve_params() {
+	slope=[];
+	for (var i=0; i<n;i++) { 
+		slope.push(alpha);
+		slope.push(-alpha);
+	}
+}
+
+function var_length(k) {
+	if (anim_state=="not started") {
+		if ((clength_cwidth_ratio+k<=3) && (clength_cwidth_ratio+k>=1.2)) { clength_cwidth_ratio+=k; }
+		document.getElementById("curve_len").innerHTML=Math.round(100*clength_cwidth_ratio);
+		onload_draw();
+	}
+}
+
+function var_n(k) {
+	if (anim_state=="not started") {
+		if ((n+k<=50) && (n+k>=2)) { n+=k; }
+		document.getElementById("zigzags").innerHTML=Math.round(n);
+		onload_draw();
+	}
+}
+
+// Draw the chain
+function draw_chain() {
+	ctx.clearRect(0,0,400,500);
+	if (document.getElementById("show_hide_button").checked) { draw_catenary(); }
+	ctx.beginPath();
+	var x0=canvas_width*0.05;
+	var y0=canvas_width*0.03;
+	energy=-y0;
+	ctx.moveTo(x0,y0);
+	for (var i=0;i<n*2;i++) {
+		x0+=d*Math.cos(slope[i]);
+		y0+=d*Math.sin(slope[i]);
+		ctx.lineTo(x0,y0);	
+		energy-=y0;
+	}
+	ctx.strokeStyle="red";
+	ctx.stroke();
+	document.getElementById("energy").innerHTML=(energy/n).toFixed(2);
+}
+
+function draw_catenary() {
+	var w=0.9*canvas_width;
+	var a=catenary_param;
+
+	var N=50;
+	var x0=canvas_width*0.5;
+	var y0=canvas_width*0.03+a*(Math.exp(w/2.0/a)+Math.exp(-w/2.0/a))/2;
+
+	ctx.beginPath();
+	ctx.moveTo(canvas_width*0.05,canvas_width*0.03);
+
+	for (var x=-w/2.0;x<=w/2.0;x+=w/N) {
+		y=a*(Math.exp(x/a)+Math.exp(-x/a))/2;
+		ctx.lineTo(x0+x,y0-y);
+	}
+	ctx.strokeStyle="blue";
+	ctx.stroke();
+}
+
+// Iteration step
+function iterate_slopes() {
+	var grad=[];
+	grad_len=0; 
+	for (var i=1;i<n;i++) { 
+		var val=-(2*n-1)/Math.tan(slope[0])*Math.sin(slope[i])+(2*n-2*i-1)*Math.cos(slope[i]); 
+		grad.push(val);
+		grad_len=Math.max(grad_len,Math.abs(val));
+	}
+	if (grad_len>1) { for (var i=0;i<n-1;i++) { grad[i]/=grad_len; } }
+
+	for (var i=1;i<n;i++) { slope[i]+=grad[i-1]/n/10; }
+	for (var i=n;i<2*n-1;i++) { slope[i]=-slope[2*n-1-i]; }
+	
+	var s=0.45*canvas_width/d;
+	for (var i=1;i<n;i++) { s-=Math.cos(slope[i]); }
+	if (Math.abs(s)>1.0) { 
+		alert('s='+s);
+		stop_cont_animation();	
+	}
+	slope[0]=Math.acos(s);
+	slope[2*n-1]=-slope[0];
+	
+	document.getElementById("gradlen").innerHTML=grad_len.toFixed(4);
+
+	var old_energy=energy;	
+	draw_chain();
+	if (energy-old_energy>-(document.getElementById("min_gradlen").value)) { stop_cont_animation(); }
+}
+
+// Animation
+function start_animation() {
+	if ((anim_state=="not started") || (anim_state=="stopped")) {
+		anim_state="started";
+		init_global_vars();
+		init_curve_params(); 
+      energy=0;
+      document.getElementById("param_setting").style.opacity=0.5;
+		document.getElementById("stop_cont_button").innerHTML="Stop animation";
+		inter=setInterval(iterate_slopes,iter_time);
+	} else if (anim_state=="started") {
+		clearInterval(inter);
+		anim_state="not started";
+		start_animation();
+	}
+}
+
+function stop_cont_animation() {
+	if (anim_state=="started") {
+		anim_state="stopped";
+		clearInterval(inter);
+		document.getElementById("stop_cont_button").innerHTML="Continue animation";
+	}
+	else if (anim_state=="stopped") {
+		anim_state="started";
+		document.getElementById("stop_cont_button").innerHTML="Stop animation";
+		inter=setInterval(iterate_slopes,iter_time); 
+	} 
+}
+
+function step_animation() {
+	if (anim_state=="not started") {
+		anim_state="stopped";
+		document.getElementById("stop_cont_button").innerHTML="Continue animation";
+		iterate_slopes();
+	} else if (anim_state=="stopped") {
+		iterate_slopes();	
+	} 
+}
+
+function reset_chain() {
+	if (anim_state=="started") {
+		anim_state="not started";
+		clearInterval(inter);
+		document.getElementById("param_setting").style.opacity=1;
+		init_global_vars();
+		init_curve_params();
+		draw_chain();
+	} else if (anim_state=="stopped") {
+		anim_state="not started";
+		document.getElementById("param_setting").style.opacity=1;
+		document.getElementById("stop_cont_button").innerHTML="Stop animation";
+		init_global_vars();
+		init_curve_params();
+		draw_chain();
+	}
+}
+
+function onload_draw() {
+	if (anim_state!="started") {
+		init_global_vars();
+		init_curve_params(); 
+		draw_chain();
+	}
+}
+
+</script>
+
+
+
+</body>
+</html>
