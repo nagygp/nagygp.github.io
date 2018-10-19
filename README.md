@@ -2,7 +2,13 @@
 
 ## GAP packages
 
+### Stable
+
+* [loops](https://gap-packages.github.io/loops/) GAP package LOOPS
 * [UnitalSZ](https://nagygp.github.io/UnitalSZ) Abstract unitals and their designs
+
+### Experimental
+
 * [LRS4GAP](https://nagygp.github.io/LRS4GAP) LRS linear programming solver interface
 * [GZero](https://github.com/nagygp/gzero-gap-package) Genus zero curves, divisors and codes
 * [OnAlgClosure](https://github.com/nagygp/onalgclosure-gap-package) Frobenius action on the algebraic closure
