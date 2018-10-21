@@ -2,12 +2,12 @@
 
 ## GAP packages
 
-### Stable
+#### Stable
 
 * [loops](https://gap-packages.github.io/loops/) GAP package LOOPS
 * [UnitalSZ](https://nagygp.github.io/UnitalSZ) Abstract unitals and their designs
 
-### Experimental
+#### Experimental
 
 * [LRS4GAP](https://nagygp.github.io/LRS4GAP) LRS linear programming solver interface
 * [GZero](https://github.com/nagygp/gzero-gap-package) Genus zero curves, divisors and codes
