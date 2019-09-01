@@ -14,7 +14,7 @@
 * [LRS4GAP](https://nagygp.github.io/LRS4GAP) LRS linear programming solver interface
 * [GZero](https://github.com/nagygp/gzero-gap-package) Genus zero curves, divisors and codes
 * [OnAlgClosure](https://github.com/nagygp/onalgclosure-gap-package) Frobenius action on the algebraic closure
-* [Hermitian] https://github.com/nagygp/Hermitian) GAP package for Hermitian codes
+* [Hermitian](https://github.com/nagygp/Hermitian) GAP package for Hermitian codes
 
 ## Teaching materials
 
