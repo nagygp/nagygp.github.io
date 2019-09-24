@@ -6,7 +6,7 @@
 
 * [loops](https://gap-packages.github.io/loops/) GAP package LOOPS
 * [UnitalSZ](https://nagygp.github.io/UnitalSZ) Abstract unitals and their designs
-* [BlissInterface](https://nagygp.github.io/BlissInterface/) Low level interface to the bliss graph automorphism tool,
+* [BlissInterface](https://gap-packages.github.io/BlissInterface/) Low level interface to the bliss graph automorphism tool,
 * [IncidenceStructures](https://nagygp.github.io/IncidenceStructures/) GAP implementation of abstract incidence structures
 
 #### Experimental
