@@ -1,222 +1,236 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
 <head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<title>Hibajavító kódok -- demonstráció</title>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>Hibajavító kódok -- demonstráció</title>
 
-<script src="ErrorCorrectionLinCode.js" type="text/javascript"></script>
+	<script src="ErrorCorrectionLinCode.js" type="text/javascript"></script>
 
-<script language=JavaScript type="text/javascript">
+	<script language=JavaScript type="text/javascript">
 
-var mplain="";
-var mdig = new Array();
-var mdig_str ="";
-var mdig_enc = new Array();
+		var mplain = "";
+		var mdig = new Array();
+		var mdig_str = "";
+		var mdig_enc = new Array();
 
-function preparation() {
-	alphabet = document.getElementById("alphabet").firstChild.nodeValue;
-	mplain = document.getElementById("petofi_text").firstChild.nodeValue;
-	mdig = plaintext2binseq(mplain);
-	mdig_str = binseq2string(mdig,7,7,25);
+		function preparation() {
+			alphabet = document.getElementById("alphabet").firstChild.nodeValue;
+			mplain = document.getElementById("petofi_text").firstChild.nodeValue;
+			mdig = plaintext2binseq(mplain);
+			mdig_str = binseq2string(mdig, 7, 7, 25);
 
-	document.getElementById("alphabet_length").firstChild.nodeValue=alphabet.length;
-	document.getElementById("message_length").firstChild.nodeValue=mplain.length;
-	document.getElementById("mdig_length").firstChild.nodeValue=mdig.length;
-	document.getElementById("petofi_digital").firstChild.nodeValue=mdig_str;
+			document.getElementById("alphabet_length").firstChild.nodeValue = alphabet.length;
+			document.getElementById("message_length").firstChild.nodeValue = mplain.length;
+			document.getElementById("mdig_length").firstChild.nodeValue = mdig.length;
+			document.getElementById("petofi_digital").firstChild.nodeValue = mdig_str;
 
-	set_noisy_message();
-	repcode_encoding_demo();
-	hamming_encoding_demo();
-	golay_encoding_demo();
-}
-
-function set_noisy_message() {
-	var p = document.getElementById("error_prob").value/100;
-	var x=noise(mdig,p);
-	mdig_n = x[0];
-	mplain_n = binseq2plaintext(mdig_n);
-	mdig_n_str = binseq2string(mdig_n,7,7,25);
-	document.getElementById("noisy_message").innerHTML=color_diff_text(mplain_n,mplain);;
-	document.getElementById("nmessage_digital").innerHTML=color_diff_text(mdig_n_str,mdig_str);;
-	document.getElementById("bits_changed").innerHTML=(100*x[1]/mdig.length).toFixed(2);
-	var y=hamming_distance(mplain,mplain_n)/mplain.length;
-	document.getElementById("letters_changed").innerHTML=(100*y).toFixed(2);
-}
-
-String.prototype.trim = function () {
-    return this.replace(/^\s*/, "").replace(/\s*$/, "");
-}
-
-function read_generator_matrix(id) {
-	var x = document.getElementById(id).innerHTML;//split("\n");
-	x=x.split("<br>");
-	for (var i=0;i<x.length;i++) { x[i]=x[i].trim(); }
-	generator_matrix = new Array();
-	for (var i=0; i<x.length; ++i) {
-		generator_matrix[i] = new Array();
-	}
-	for (var i=0; i<x.length; ++i) {
-		for (var j=0; j<x[i].length; ++j) {
-			generator_matrix[i][j]=parseInt(x[i][j]);
+			set_noisy_message();
+			repcode_encoding_demo();
+			hamming_encoding_demo();
+			golay_encoding_demo();
 		}
-	}
-}
 
-function repcode_encoding_demo() {
-	document.getElementById("message_digital_repet").innerHTML=binseq2string(mdig,8,6,15);
-	read_generator_matrix('repcode_genmatrix');
-	set_code(generator_matrix);
-	mdig_enc=encoding(mdig);
-	mdig_enc_str=binseq2string(mdig_enc,24,2,15);
+		function set_noisy_message() {
+			var p = document.getElementById("error_prob").value / 100;
+			var x = noise(mdig, p);
+			mdig_n = x[0];
+			mplain_n = binseq2plaintext(mdig_n);
+			mdig_n_str = binseq2string(mdig_n, 7, 7, 25);
+			document.getElementById("noisy_message").innerHTML = color_diff_text(mplain_n, mplain);;
+			document.getElementById("nmessage_digital").innerHTML = color_diff_text(mdig_n_str, mdig_str);;
+			document.getElementById("bits_changed").innerHTML = (100 * x[1] / mdig.length).toFixed(2);
+			var y = hamming_distance(mplain, mplain_n) / mplain.length;
+			document.getElementById("letters_changed").innerHTML = (100 * y).toFixed(2);
+		}
 
-	document.getElementById("message_digital_enc_repet").innerHTML=mdig_enc_str;
-	document.getElementById("code_length").innerHTML=code_len;
-	document.getElementById("code_dimension").innerHTML=code_dim;
-}
+		String.prototype.trim = function () {
+			return this.replace(/^\s*/, "").replace(/\s*$/, "");
+		}
 
-function golay_encoding_demo() {
-	document.getElementById("message_digital_golay").innerHTML=binseq2string(mdig,12,4,15);
-	read_generator_matrix('golay_genmatrix');
-	set_code(generator_matrix);
-	mdig_enc=encoding(mdig);
-	mdig_enc_str=binseq2string(mdig_enc,24,2,15);
+		function read_generator_matrix(id) {
+			var x = document.getElementById(id).innerHTML;//split("\n");
+			x = x.split("<br>");
+			for (var i = 0; i < x.length; i++) { x[i] = x[i].trim(); }
+			generator_matrix = new Array();
+			for (var i = 0; i < x.length; ++i) {
+				generator_matrix[i] = new Array();
+			}
+			for (var i = 0; i < x.length; ++i) {
+				for (var j = 0; j < x[i].length; ++j) {
+					generator_matrix[i][j] = parseInt(x[i][j]);
+				}
+			}
+		}
 
-	var x=document.getElementById("message_digital_enc_golay").innerHTML=mdig_enc_str;
-	document.getElementById("gcode_length").innerHTML=code_len;
-	document.getElementById("gcode_dimension").innerHTML=code_dim;
-}
+		function repcode_encoding_demo() {
+			document.getElementById("message_digital_repet").innerHTML = binseq2string(mdig, 8, 6, 15);
+			read_generator_matrix('repcode_genmatrix');
+			set_code(generator_matrix);
+			mdig_enc = encoding(mdig);
+			mdig_enc_str = binseq2string(mdig_enc, 24, 2, 15);
 
-function repcode_decoding_demo() {
-	read_generator_matrix('repcode_genmatrix');
-	set_code(generator_matrix);
-	mdig_enc=encoding(mdig);
-	mdig_enc_str=binseq2string(mdig_enc,24,2,15);
+			document.getElementById("message_digital_enc_repet").innerHTML = mdig_enc_str;
+			document.getElementById("code_length").innerHTML = code_len;
+			document.getElementById("code_dimension").innerHTML = code_dim;
+		}
 
-	var p = document.getElementById("error_prob").value/100;
-	var x = noise(mdig_enc,p);
-	mdig_enc_n = x[0];
-	mdig_enc_n_str = binseq2string(mdig_enc_n,24,2,15);
-	var corr_mdig_enc_n=decoding(mdig_enc_n);
-	var corr_mplain=binseq2plaintext(corr_mdig_enc_n);
+		function golay_encoding_demo() {
+			document.getElementById("message_digital_golay").innerHTML = binseq2string(mdig, 12, 4, 15);
+			read_generator_matrix('golay_genmatrix');
+			set_code(generator_matrix);
+			mdig_enc = encoding(mdig);
+			mdig_enc_str = binseq2string(mdig_enc, 24, 2, 15);
 
-	document.getElementById("nm_enc_repet").innerHTML = color_diff_text(mdig_enc_n_str,mdig_enc_str);
-	document.getElementById("corr_nm_enc_repet").innerHTML=color_diff_text(corr_mplain,mplain);
-	document.getElementById("bits_changed_code").innerHTML=(100*x[1]/mdig_enc.length).toFixed(2);
-	var y=hamming_distance(mplain,corr_mplain)/mplain.length;
-	document.getElementById("letters_changed_code").innerHTML=(100*y).toFixed(2);
-}
+			var x = document.getElementById("message_digital_enc_golay").innerHTML = mdig_enc_str;
+			document.getElementById("gcode_length").innerHTML = code_len;
+			document.getElementById("gcode_dimension").innerHTML = code_dim;
+		}
 
-function golay_decoding_demo() {
-	read_generator_matrix('golay_genmatrix');
-	set_code(generator_matrix);
-	mdig_enc=encoding(mdig);
-	mdig_enc_str=binseq2string(mdig_enc,24,2,15);
+		function repcode_decoding_demo() {
+			read_generator_matrix('repcode_genmatrix');
+			set_code(generator_matrix);
+			mdig_enc = encoding(mdig);
+			mdig_enc_str = binseq2string(mdig_enc, 24, 2, 15);
 
-	var p = document.getElementById("error_prob").value/100;
-	var x = noise(mdig_enc,p);
-	mdig_enc_n = x[0];
-	mdig_enc_n_str = binseq2string(mdig_enc_n,24,2,15);
-	var corr_mdig_enc_n=decoding(mdig_enc_n);
-	var corr_mplain=binseq2plaintext(corr_mdig_enc_n);
+			var p = document.getElementById("error_prob").value / 100;
+			var x = noise(mdig_enc, p);
+			mdig_enc_n = x[0];
+			mdig_enc_n_str = binseq2string(mdig_enc_n, 24, 2, 15);
+			var corr_mdig_enc_n = decoding(mdig_enc_n);
+			var corr_mplain = binseq2plaintext(corr_mdig_enc_n);
 
-	document.getElementById("nm_enc_golay").innerHTML = color_diff_text(mdig_enc_n_str,mdig_enc_str);
-	document.getElementById("corr_nm_enc_golay").innerHTML=color_diff_text(corr_mplain,mplain);
-	document.getElementById("bits_changed_gcode").innerHTML=(100*x[1]/mdig_enc.length).toFixed(2);
-	var y=hamming_distance(mplain,corr_mplain)/mplain.length;
-	document.getElementById("letters_changed_gcode").innerHTML=(100*y).toFixed(2);
-}
+			document.getElementById("nm_enc_repet").innerHTML = color_diff_text(mdig_enc_n_str, mdig_enc_str);
+			document.getElementById("corr_nm_enc_repet").innerHTML = color_diff_text(corr_mplain, mplain);
+			document.getElementById("bits_changed_code").innerHTML = (100 * x[1] / mdig_enc.length).toFixed(2);
+			var y = hamming_distance(mplain, corr_mplain) / mplain.length;
+			document.getElementById("letters_changed_code").innerHTML = (100 * y).toFixed(2);
+		}
 
-function hamming_encoding_demo() {
-	document.getElementById("message_digital_hamming").innerHTML=binseq2string(mdig,4,10,15);
-	read_generator_matrix('hamming_genmatrix');
-	set_code(generator_matrix);
-	mdig_enc=encoding(mdig);
-	mdig_enc_str=binseq2string(mdig_enc,7,6,15);
+		function golay_decoding_demo() {
+			read_generator_matrix('golay_genmatrix');
+			set_code(generator_matrix);
+			mdig_enc = encoding(mdig);
+			mdig_enc_str = binseq2string(mdig_enc, 24, 2, 15);
 
-	var x=document.getElementById("message_digital_enc_hamming").innerHTML=mdig_enc_str;
-	document.getElementById("hcode_length").innerHTML=code_len;
-	document.getElementById("hcode_dimension").innerHTML=code_dim;
-}
+			var p = document.getElementById("error_prob").value / 100;
+			var x = noise(mdig_enc, p);
+			mdig_enc_n = x[0];
+			mdig_enc_n_str = binseq2string(mdig_enc_n, 24, 2, 15);
+			var corr_mdig_enc_n = decoding(mdig_enc_n);
+			var corr_mplain = binseq2plaintext(corr_mdig_enc_n);
 
-function hamming_decoding_demo() {
-	read_generator_matrix('hamming_genmatrix');
-	set_code(generator_matrix);
-	mdig_enc=encoding(mdig);
-	mdig_enc_str=binseq2string(mdig_enc,7,2,15);
+			document.getElementById("nm_enc_golay").innerHTML = color_diff_text(mdig_enc_n_str, mdig_enc_str);
+			document.getElementById("corr_nm_enc_golay").innerHTML = color_diff_text(corr_mplain, mplain);
+			document.getElementById("bits_changed_gcode").innerHTML = (100 * x[1] / mdig_enc.length).toFixed(2);
+			var y = hamming_distance(mplain, corr_mplain) / mplain.length;
+			document.getElementById("letters_changed_gcode").innerHTML = (100 * y).toFixed(2);
+		}
 
-	var p = document.getElementById("error_prob").value/100;
-	var x = noise(mdig_enc,p);
-	mdig_enc_n = x[0];
-	mdig_enc_n_str = binseq2string(mdig_enc_n,7,2,15);
-	var corr_mdig_enc_n=decoding(mdig_enc_n);
-	var corr_mplain=binseq2plaintext(corr_mdig_enc_n);
+		function hamming_encoding_demo() {
+			document.getElementById("message_digital_hamming").innerHTML = binseq2string(mdig, 4, 10, 15);
+			read_generator_matrix('hamming_genmatrix');
+			set_code(generator_matrix);
+			mdig_enc = encoding(mdig);
+			mdig_enc_str = binseq2string(mdig_enc, 7, 6, 15);
 
-	document.getElementById("nm_enc_hamming").innerHTML = color_diff_text(mdig_enc_n_str,mdig_enc_str);
-	document.getElementById("corr_nm_enc_hamming").innerHTML=color_diff_text(corr_mplain,mplain);
-	document.getElementById("bits_changed_hcode").innerHTML=(100*x[1]/mdig_enc.length).toFixed(2);
-	var y=hamming_distance(mplain,corr_mplain)/mplain.length;
-	document.getElementById("letters_changed_hcode").innerHTML=(100*y).toFixed(2);
-}
+			var x = document.getElementById("message_digital_enc_hamming").innerHTML = mdig_enc_str;
+			document.getElementById("hcode_length").innerHTML = code_len;
+			document.getElementById("hcode_dimension").innerHTML = code_dim;
+		}
 
-</script>
+		function hamming_decoding_demo() {
+			read_generator_matrix('hamming_genmatrix');
+			set_code(generator_matrix);
+			mdig_enc = encoding(mdig);
+			mdig_enc_str = binseq2string(mdig_enc, 7, 2, 15);
+
+			var p = document.getElementById("error_prob").value / 100;
+			var x = noise(mdig_enc, p);
+			mdig_enc_n = x[0];
+			mdig_enc_n_str = binseq2string(mdig_enc_n, 7, 2, 15);
+			var corr_mdig_enc_n = decoding(mdig_enc_n);
+			var corr_mplain = binseq2plaintext(corr_mdig_enc_n);
+
+			document.getElementById("nm_enc_hamming").innerHTML = color_diff_text(mdig_enc_n_str, mdig_enc_str);
+			document.getElementById("corr_nm_enc_hamming").innerHTML = color_diff_text(corr_mplain, mplain);
+			document.getElementById("bits_changed_hcode").innerHTML = (100 * x[1] / mdig_enc.length).toFixed(2);
+			var y = hamming_distance(mplain, corr_mplain) / mplain.length;
+			document.getElementById("letters_changed_hcode").innerHTML = (100 * y).toFixed(2);
+		}
+
+	</script>
 
 </head>
 
 <body onload="javascript:preparation()">
 
-<h1>Hibajavító kódok -- bemutató (<a href="coding_demo_en.html">switch to English</a>)</h1>
+	<h1>Hibajavító kódok -- bemutató (<a href="coding_demo_en.html">switch to English</a>)</h1>
 
-<p>Készítette: <a href="http://www.math.u-szeged.hu/~nagyg">Dr. Nagy Gábor Péter</a>, <a href="http://www.u-szeged.hu">SZTE</a> <a href="http://www.math.u-szeged.hu/">Bolyai Intézet</a>.</p>
+	<p>Készítette: <a href="http://www.math.u-szeged.hu/~nagyg">Dr. Nagy Gábor Péter</a>, <a href="http://www.u-szeged.hu">SZTE</a>
+		<a href="http://www.math.u-szeged.hu/">Bolyai Intézet</a>.</p>
 
-<h2>Összefoglaló</h2>
+	<h2>Összefoglaló</h2>
 
-<ol>
-	<li><a href="#F1">A feladat</a></li>
-	<li><a href="#F2">Az ábécé</a></li>
-	<li><a href="#F3">Az üzenet</a></li>
-	<li><a href="#F4">A zaj</a></li>
-	<li><a href="#F5">Kódolás ismétlő kóddal</a></li>
-	<li><a href="#F6">Dekódolás ismétlő kóddal</a></li>
-	<li><a href="#F7">Kódolás a Golay-kóddal</a></li>
-	<li><a href="#F8">Dekódolás a Golay-kóddal</a></li>
-	<li><a href="#F9">Konklúzió</a></li>
-</ol>
+	<ol>
+		<li><a href="#F1">A feladat</a></li>
+		<li><a href="#F2">Az ábécé</a></li>
+		<li><a href="#F3">Az üzenet</a></li>
+		<li><a href="#F4">A zaj</a></li>
+		<li><a href="#F5">Kódolás ismétlő kóddal</a></li>
+		<li><a href="#F6">Dekódolás ismétlő kóddal</a></li>
+		<li><a href="#HammEnc">Kódolás a Hamming-kóddal</a></li>
+		<li><a href="#HammDec">Dekódolás a Hamming-kóddal</a></li>
+		<li><a href="#F7">Kódolás a Golay-kóddal</a></li>
+		<li><a href="#F8">Dekódolás a Golay-kóddal</a></li>
+		<li><a href="#F9">Konklúzió</a></li>
+	</ol>
 
-<hr /><h2><a name="F1">A feladat</a></h2>
+	<hr />
+	<h2><a name="F1">A feladat</a></h2>
 
-<p><strong>Ábécének</strong> nevezzük írásjeleknek egy véges halmazát. A feladatunk az, hogy egy adott ábécé segítségével összeállított <strong>szöveges üzenetet</strong> továbbítsunk <strong>digitális eszközök</strong> között. </p>
-<p>A továbbítás során a külső <strong>zaj</strong> hatására a küldött és a fogadott jelsorozat különbözik. </p>
-<p>A cél olyan eljárás kidolgozása, ami a fellépő hibákat minél nagyobb számban képes kijavítani. </p>
+	<p><strong>Ábécének</strong> nevezzük írásjeleknek egy véges halmazát. A feladatunk az, hogy egy adott ábécé
+		segítségével összeállított <strong>szöveges üzenetet</strong> továbbítsunk <strong>digitális eszközök</strong>
+		között. </p>
+	<p>A továbbítás során a külső <strong>zaj</strong> hatására a küldött és a fogadott jelsorozat különbözik. </p>
+	<p>A cél olyan eljárás kidolgozása, ami a fellépő hibákat minél nagyobb számban képes kijavítani. </p>
 
 
-<hr /><h2><a name="F2">Az ábécé</a></h2>
+	<hr />
+	<h2><a name="F2">Az ábécé</a></h2>
 
-<p>Ábécéként rögzítsük írásjeleknek az alábbi sorozatát:</p>
+	<p>Ábécéként rögzítsük írásjeleknek az alábbi sorozatát:</p>
 
-<pre>[<span id="alphabet"> aábcdeéfghiíjklmnoóöőpqrstuúüűvwxyzAÁBCDEÉFGHIÍJKLMNOÓÖŐPQRTSUÚÜŰVWXYZ
+	<pre>[<span id="alphabet"> aábcdeéfghiíjklmnoóöőpqrstuúüűvwxyzAÁBCDEÉFGHIÍJKLMNOÓÖŐPQRTSUÚÜŰVWXYZ
 0123456789.,:;?!()+-*/=€$'"*****************************</span>]</pre>
 
-<p>Ez az ábécé <strong><span id="alphabet_length">&nbsp;</span></strong> írásjelet tartalmaz, beleértve a szóközt (első karakter) és a sortörés jelét is (nagy Z után).</p>
+	<p>Ez az ábécé <strong><span id="alphabet_length">&nbsp;</span></strong> írásjelet tartalmaz, beleértve a szóközt
+		(első karakter) és a sortörés jelét is (nagy Z után).</p>
 
-<hr /><h2><a name="F3">Az üzenet</a></h2>
+	<hr />
+	<h2><a name="F3">Az üzenet</a></h2>
 
-<p>Mivel a szöveget <strong>digitális eszközök</strong> között továbbítjuk, át kell alakítani <strong>0-k és 1-ek</strong> sorozatává. </p>
-<p>Ehhez minden írásjelnek megfeleltetünk egy 0 és 127 közötti számot, majd vesszük ennek a felírását <strong>2-es számrendszerben.</strong> </p>
+	<p>Mivel a szöveget <strong>digitális eszközök</strong> között továbbítjuk, át kell alakítani <strong>0-k és 1-ek</strong>
+		sorozatává. </p>
+	<p>Ehhez minden írásjelnek megfeleltetünk egy 0 és 127 közötti számot, majd vesszük ennek a felírását <strong>2-es
+			számrendszerben.</strong> </p>
 
-<table border=1>
-	<colgroup>
-		<col width="350">
-		<col width="350">
-	</colgroup>
-	<thead>
-		<tr>
-			<th>Sima szöveg</th>
-			<th>Digitalizált szöveg</th>
-		</tr>
-	</thead>
-<tbody>
-<tr><td valign="top"><div style="width:350pt;overflow:auto;">
-<pre id="petofi_text">
+	<table border=1>
+		<colgroup>
+			<col width="350">
+			<col width="350">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>Sima szöveg</th>
+				<th>Digitalizált szöveg</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td valign="top">
+					<div style="width:350pt;overflow:auto;">
+						<pre id="petofi_text">
 Petőfi Sándor: János vitéz (részlet)
 
 Tüzesen süt le a nyári nap sugára
@@ -254,154 +268,176 @@ Gyere ki a vízből, hadd öleljelek meg;
 Gyere ki a partra csak egy pillanatra,
 Rácsókolom lelkem piros ajakadra!"
 </pre>
-</div></td>
-<td valign="top"><div style="width:350pt;height:450pt;overflow:auto;white-space:nowrap;">
-<pre id="petofi_digital">&nbsp;</pre>
-</div></td></tr>
-</tbody></table>
+					</div>
+				</td>
+				<td valign="top">
+					<div style="width:350pt;height:450pt;overflow:auto;white-space:nowrap;">
+						<pre id="petofi_digital">&nbsp;</pre>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 
-<p>A sima szöveg <b><span id="message_length">&nbsp;</span></b> karakterből áll. </p>
-<p>A digitalizált szöveg <b><span id="mdig_length">&nbsp;</span></b> bitet (0/1 karaktert) tartalmaz.</p>
+	<p>A sima szöveg <b><span id="message_length">&nbsp;</span></b> karakterből áll. </p>
+	<p>A digitalizált szöveg <b><span id="mdig_length">&nbsp;</span></b> bitet (0/1 karaktert) tartalmaz.</p>
 
 
-<hr /><h2><a name="F4">A zaj</a></h2>
+	<hr />
+	<h2><a name="F4">A zaj</a></h2>
 
-<form action="javascript:set_noisy_message()">
-Annak a százalékos valószínűsége, hogy egy bitet a zaj megváltoztat, legyen 
-<var>p=</var><input type=text size=2 value=3 maxlength=2 id="error_prob">%.
-<input type=submit value="Generálja le a zajos üzenetet!">
-</form>
+	<form action="javascript:set_noisy_message()">
+		Annak a százalékos valószínűsége, hogy egy bitet a zaj megváltoztat, legyen
+		<var>p=</var><input type=text size=2 value=3 maxlength=2 id="error_prob">%.
+		<input type=submit value="Generálja le a zajos üzenetet!">
+	</form>
 
-<p>A zaj áltak átírt bitek aránya: <b><span id="bits_changed">0</span>%.</b> 
-A zaj által elrontott írásjelek aránya: <b><span id="letters_changed">0</span>%.</b></p>
+	<p>A zaj áltak átírt bitek aránya: <b><span id="bits_changed">0</span>%.</b>
+		A zaj által elrontott írásjelek aránya: <b><span id="letters_changed">0</span>%.</b></p>
 
-<p><strong>Meg tudjuk ezt magyarázni?</strong></p>
+	<p><strong>Meg tudjuk ezt magyarázni?</strong></p>
 
-<table border=1>
-	<colgroup>
-		<col width="350">
-		<col width="350">
-	</colgroup>
-	<thead>
+	<table border=1>
+		<colgroup>
+			<col width="350">
+			<col width="350">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>Zajos sima szöveg</th>
+				<th>Zajos digitalizált szöveg</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td align="top">
+					<div id="noisy_message" style="width:350pt;height:450pt;overflow:auto;white-space:nowrap;">&nbsp;</div>
+				</td>
+				<td valign="top">
+					<div id="nmessage_digital" style="width:350pt;height:450pt;overflow:auto;white-space:nowrap;">&nbsp;</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+
+
+	<hr />
+	<h2><a name="F5">Kódolás ismétlő kóddal</a></h2>
+
+	<p>Az első ötlet az <strong>ismétlő kód: </strong>Ismételjünk meg minden bitet háromszor!</p>
+	<p><strong>Az ár: </strong>Háromszor olyan hosszú bináris jelsorozatot kell átvinni.</p>
+
+	<table border=1>
 		<tr>
-			<th>Zajos sima szöveg</th>
-			<th>Zajos digitalizált szöveg</th>
+			<td colspan="2"><strong>Az ismétlő kód paraméterei</strong></td>
 		</tr>
-	</thead>
-<tbody>
-<tr><td align="top"><div id="noisy_message" 
-style="width:350pt;height:450pt;overflow:auto;white-space:nowrap;">&nbsp;</div>
-</td><td valign="top">
-<div id="nmessage_digital"
-style="width:350pt;height:450pt;overflow:auto;white-space:nowrap;">&nbsp;</div></td></tr>
-</tbody></table>
-
-
-
-<hr /><h2><a name="F5">Kódolás ismétlő kóddal</a></h2>
-
-<p>Az első ötlet az <strong>ismétlő kód: </strong>Ismételjünk meg minden bitet háromszor!</p>
-<p><strong>Az ár: </strong>Háromszor olyan hosszú bináris jelsorozatot kell átvinni.</p>
-
-<table border=1>
-<tr>
-	<td colspan="2"><strong>Az ismétlő kód paraméterei</strong></td>
-</tr>
-<tr>
-	<td>A kód hossza:</td>
-	<td align=center><b><span id="code_length">0</span></b></td>
-</tr>
-<tr>
-	<td>A kód dimenziója:</td>
-	<td align=center><b><span id="code_dimension">0</span></b></td>
-</tr>
-<tr>
-	<td>A generátor mátrix:</td>
-	<td>
-		<div style="border: 1px solid black; padding: 3pt;margin:3pt">
-<!-- Separate matrix rows with <br> -->
-		<code id="repcode_genmatrix">
+		<tr>
+			<td>A kód hossza:</td>
+			<td align=center><b><span id="code_length">0</span></b></td>
+		</tr>
+		<tr>
+			<td>A kód dimenziója:</td>
+			<td align=center><b><span id="code_dimension">0</span></b></td>
+		</tr>
+		<tr>
+			<td>A generátor mátrix:</td>
+			<td>
+				<div style="border: 1px solid black; padding: 3pt;margin:3pt">
+					<!-- Separate matrix rows with <br> -->
+					<code id="repcode_genmatrix">
 1<br>
 1<br>
 1
 </code>
-		</div>
-	</td>
-</tr>
-</table>
-
-
-<p/>
-
-<table border=1>
-	<colgroup>
-		<col width="450">
-		<col width="450">
-	</colgroup>
-	<thead>
-		<tr>
-			<th>Digitalizált szöveg</th>
-			<th>Az ismétlő kóddal kódolt digitalizált szöveg</th>
+				</div>
+			</td>
 		</tr>
-	</thead>
-<tbody><tr>
-<td valign="top"><pre id="message_digital_repet">&nbsp;</pre></td>
-<td valign="top"><pre id="message_digital_enc_repet">&nbsp;</pre></td>
-</tr></tbody></table>
+	</table>
 
 
-<hr /><h2><a name="F6">Dekódolás ismétlő kóddal</a></h2>
+	<p />
 
-<form action="javascript:repcode_decoding_demo()">
-<input type=submit value="Javítsa ki a zajos, ismétlő kóddal kódolt üzenetet!">
-</form>
+	<table border=1>
+		<colgroup>
+			<col width="450">
+			<col width="450">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>Digitalizált szöveg</th>
+				<th>Az ismétlő kóddal kódolt digitalizált szöveg</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td valign="top">
+					<pre id="message_digital_repet">&nbsp;</pre>
+				</td>
+				<td valign="top">
+					<pre id="message_digital_enc_repet">&nbsp;</pre>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 
-<p>A zaj áltak átírt bitek aránya: <b><span id="bits_changed_code">0</span>%.</b> 
-A zaj által elrontott írásjelek aránya: <b><span id="letters_changed_code">0</span>%.</b></p>
 
-<table border=1>
-	<colgroup>
-		<col width="450">
-		<col width="450">
-	</colgroup>
-	<thead>
+	<hr />
+	<h2><a name="F6">Dekódolás ismétlő kóddal</a></h2>
+
+	<form action="javascript:repcode_decoding_demo()">
+		<input type=submit value="Javítsa ki a zajos, ismétlő kóddal kódolt üzenetet!">
+	</form>
+
+	<p>A zaj áltak átírt bitek aránya: <b><span id="bits_changed_code">0</span>%.</b>
+		A zaj által elrontott írásjelek aránya: <b><span id="letters_changed_code">0</span>%.</b></p>
+
+	<table border=1>
+		<colgroup>
+			<col width="450">
+			<col width="450">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>A zajos kódolt digitalizált szöveg</th>
+				<th>A zajos kódolt szöveg hibajavítás után</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td valign="top"><code><span id="nm_enc_repet">&nbsp;</span></code></td>
+				<td valign="top">
+					<p id="corr_nm_enc_repet">&nbsp;</p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<!-----Hamming START------------>
+
+	<hr>
+
+	<h2><a name="HammEnc">Kódolás a Hamming-kóddal</a></h2>
+
+	<p>Csinálhatjuk ennél jobban is? <strong>IGEN! Használjuk a Hamming-kódot.</strong></p>
+	<p><strong>Az ár: </strong>7/4-szer olyan hosszú bináris jelsorozatot kell átvinni.</p>
+
+	<table border=1>
 		<tr>
-			<th>A zajos kódolt digitalizált szöveg</th>
-			<th>A zajos kódolt szöveg hibajavítás után</th>
+			<td><strong>A Hamming-kód paraméterei</strong></td </tr> <tr>
+			<td>A kód hossza:</td>
+			<td align=center><b><span id="hcode_length">0</span></b></td>
 		</tr>
-	</thead>
-<tbody><tr>
-<td valign="top"><code><span id="nm_enc_repet">&nbsp;</span></code></td>
-<td valign="top"><p id="corr_nm_enc_repet">&nbsp;</p></td>
-</tr></tbody></table>
-
-<!-----Hamming START------------>
-
-<hr>
-
-<h2>Encoding with the Hamming Code</h2>
-
-<p>Can we do better? <strong>YES! Use the Hamming code.</strong>
-<p><strong>The price: </strong>You have to transmit a 7/4-times longer binary sequence.</p>
-
-<table border=1>
-<tr>
-	<td><strong>The parameters of the repetition code</strong></td
-</tr>
-<tr>
-	<td>Length of the code:</td>
-	<td align=center><b><span id="hcode_length">0</span></b></td>
-</tr>
-<tr>
-	<td>Dimension of the code:</td>
-	<td align=center><b><span id="hcode_dimension">0</span></b></td>
-</tr>
-<tr>
-	<td>The generator matrix:</td>
-	<td>
-		<div style="border: 1px solid black; padding: 3pt;margin:3pt">
-<!-- Separate matrix rows with <br> and make no whitespaces -->
-		<code id="hamming_genmatrix">
+		<tr>
+			<td>A kód dimenziója:</td>
+			<td align=center><b><span id="hcode_dimension">0</span></b></td>
+		</tr>
+		<tr>
+			<td>A generátor mátrix:</td>
+			<td>
+				<div style="border: 1px solid black; padding: 3pt;margin:3pt">
+					<!-- Separate matrix rows with <br> and make no whitespaces -->
+					<code id="hamming_genmatrix">
 1000<br>
 0100<br>
 0010<br>
@@ -410,88 +446,102 @@ A zaj által elrontott írásjelek aránya: <b><span id="letters_changed_code">0
 1011<br>
 0111
 </code>
-		</div>
-	</td>
-</tr>
-</table>
-
-
-<p/>
-
-<table border=1>
-	<colgroup>
-		<col width="450">
-		<col width="450">
-	</colgroup>
-	<thead>
-		<tr>
-			<th>Digitalized text</th>
-			<th>Digitalized text encoded with Hamming code</th>
+				</div>
+			</td>
 		</tr>
-	</thead>
-<tbody><tr>
-<td valign="top"><pre id="message_digital_hamming">&nbsp;</pre></td>
-<td valign="top"><pre id="message_digital_enc_hamming">&nbsp;</pre></td>
-</tr></tbody></table>
+	</table>
 
 
-<h2>Decoding with the Hamming Code</h2>
+	<p />
 
-<form action="javascript:hamming_decoding_demo()">
-<input type=submit value="Correct the noisy encoded message using the Hamming code!">
-</form>
+	<table border=1>
+		<colgroup>
+			<col width="450">
+			<col width="450">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>Digitalizált szöveg/th>
+				<th>A Hamming-kóddal kódolt digitalizált szöveg</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td valign="top">
+					<pre id="message_digital_hamming">&nbsp;</pre>
+				</td>
+				<td valign="top">
+					<pre id="message_digital_enc_hamming">&nbsp;</pre>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 
-<p>Ratio of bits changed by the noise: <b><span id="bits_changed_hcode">0</span>%.</b> 
-Ratio of letters changed by the noise: <b><span id="letters_changed_hcode">0</span>%.</b></p>
 
-<p>While the threefold repetition code corrects <b>1</b> error per codeword (of length 3), 
-the Golay code corrects <b>1</b> errors per codewords (of length 7).</p>
+	<h2><a name="HammDec">Dekódolás a Hamming-kóddal</a></h2>
 
-<table border=1>
-	<colgroup>
-		<col width="450">
-		<col width="450">
-	</colgroup>
-	<thead>
+	<form action="javascript:hamming_decoding_demo()">
+		<input type=submit value="Correct the noisy encoded message using the Hamming code!">
+	</form>
+
+	<p>A zaj áltak átírt bitek aránya: <b><span id="bits_changed_hcode">0</span>%.</b>
+		A zaj által elrontott írásjelek aránya: <b><span id="letters_changed_hcode">0</span>%.</b></p>
+
+	<p>Míg a háromszoros ismétlő kód (3 bites) kódszavanként <strong>1</strong>
+		hibát tud kijavítani, a Hamming-kód (7 bites) kódszavanként <strong>1</strong> hibát
+		tud javítani.</p>
+
+	<table border=1>
+		<colgroup>
+			<col width="450">
+			<col width="450">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>A zajos kódolt digitalizált szöveg</th>
+				<th>A zajos kódolt szöveg hibajavítás után</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td valign="top"><code><span id="nm_enc_hamming">&nbsp;</span></code></td>
+				<td valign="top">
+					<p id="corr_nm_enc_hamming">&nbsp;</p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<!-----Hamming END------------>
+
+	<hr />
+	<h2><a name="F7">Kódolás a Golay-kóddal</a></h2>
+
+	<p>Csinálhatjuk ennél jobban is? <strong>IGEN! Használjuk a (kiterjesztett) Golay-kódot.</strong></p>
+	<p><strong>Az ár: </strong>Kétszer olyan hosszú bináris jelsorozatot kell átvinni.</p>
+
+	<!--<form action="javascript:golay_encoding_demo()">-->
+	<!--<input type=submit value="Correct the noisy encoded message using the repetition code!">-->
+	<!--</form><br />-->
+
+	<table border=1>
 		<tr>
-			<th>Noisy encoded digital text</th>
-			<th>Error corrected noisy encoded text</th>
+			<td colspan="2"><strong>A Golay-kód paraméterei</strong></td>
 		</tr>
-	</thead>
-<tbody><tr>
-<td valign="top"><code><span id="nm_enc_hamming">&nbsp;</span></code></td>
-<td valign="top"><p id="corr_nm_enc_hamming">&nbsp;</p></td>
-</tr></tbody></table>
-
-<!-----Hamming END------------>
-
-<hr /><h2><a name="F7">Kódolás a Golay-kóddal</a></h2>
-
-<p>Csinálhatjuk ennél jobban is? <strong>IGEN! Használjuk a (kiterjesztett) Golay-kódot.</strong>
-<p><strong>Az ár: </strong>Kétszer olyan hosszú bináris jelsorozatot kell átvinni.</p>
-
-<!--<form action="javascript:golay_encoding_demo()">-->
-<!--<input type=submit value="Correct the noisy encoded message using the repetition code!">-->
-<!--</form><br />-->
-
-<table border=1>
-<tr>
-	<td colspan="2"><strong>A Golay-kód paraméterei</strong></td>
-</tr>
-<tr>
-	<td>A kód hossza:</td>
-	<td align=center><b><span id="gcode_length">0</span></b></td>
-</tr>
-<tr>
-	<td>A kód dimenziója:</td>
-	<td align=center><b><span id="gcode_dimension">0</span></b></td>
-</tr>
-<tr>
-	<td>A generátor mátrix:</td>
-	<td>
-		<div style="border: 1px solid black; padding: 3pt;margin:3pt">
-<!-- Separate matrix rows with <br> and make no whitespaces -->
-		<code id="golay_genmatrix">
+		<tr>
+			<td>A kód hossza:</td>
+			<td align=center><b><span id="gcode_length">0</span></b></td>
+		</tr>
+		<tr>
+			<td>A kód dimenziója:</td>
+			<td align=center><b><span id="gcode_dimension">0</span></b></td>
+		</tr>
+		<tr>
+			<td>A generátor mátrix:</td>
+			<td>
+				<div style="border: 1px solid black; padding: 3pt;margin:3pt">
+					<!-- Separate matrix rows with <br> and make no whitespaces -->
+					<code id="golay_genmatrix">
 100000000000<br>
 010000000000<br>
 101000000000<br>
@@ -517,71 +567,85 @@ the Golay code corrects <b>1</b> errors per codewords (of length 7).</p>
 000000000001<br>
 111111111111
 </code>
-		</div>
-	</td>
-</tr>
-</table>
-
-
-<p/>
-
-<table border=1>
-	<colgroup>
-		<col width="450">
-		<col width="450">
-	</colgroup>
-	<thead>
-		<tr>
-			<th>Digitalizált szöveg</th>
-			<th>A Golay-kóddal kódolt digitalizált szöveg</th>
+				</div>
+			</td>
 		</tr>
-	</thead>
-<tbody><tr>
-<td valign="top"><pre id="message_digital_golay">&nbsp;</pre></td>
-<td valign="top"><pre id="message_digital_enc_golay">&nbsp;</pre></td>
-</tr></tbody></table>
+	</table>
 
 
-<hr /><h2><a name="F8">Dekódolás a Golay-kóddal</a></h2>
+	<p />
 
-<form action="javascript:golay_decoding_demo()">
-<input type=submit value="Javítsa ki a zajos, Golay-kóddal kódolt üzenetet!">
-</form>
+	<table border=1>
+		<colgroup>
+			<col width="450">
+			<col width="450">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>Digitalizált szöveg</th>
+				<th>A Golay-kóddal kódolt digitalizált szöveg</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td valign="top">
+					<pre id="message_digital_golay">&nbsp;</pre>
+				</td>
+				<td valign="top">
+					<pre id="message_digital_enc_golay">&nbsp;</pre>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 
-<p>A zaj áltak átírt bitek aránya: <b><span id="bits_changed_gcode">0</span>%.</b> 
-A zaj által elrontott írásjelek aránya: <b><span id="letters_changed_gcode">0</span>%.</b></p>
 
-<p>Míg a háromszoros ismétlő kód (3 bites) kódszavanként <strong>1</strong>
-hibát tud kijavítani, a Golay-kód (24 bites) kódszavanként <strong>3</strong> hibát 
-tud javítani.</p>
+	<hr />
+	<h2><a name="F8">Dekódolás a Golay-kóddal</a></h2>
 
-<table border=1>
-	<colgroup>
-		<col width="450">
-		<col width="450">
-	</colgroup>
-	<thead>
-		<tr>
-			<th>A zajos kódolt digitalizált szöveg</th>
-			<th>A zajos kódolt szöveg hibajavítás után</th>
-		</tr>
-	</thead>
-<tbody><tr>
-<td valign="top"><code><span id="nm_enc_golay">&nbsp;</span></code></td>
-<td valign="top"><p id="corr_nm_enc_golay">&nbsp;</p></td>
-</tr></tbody></table>
+	<form action="javascript:golay_decoding_demo()">
+		<input type=submit value="Javítsa ki a zajos, Golay-kóddal kódolt üzenetet!">
+	</form>
 
-<hr /><h2><a name="F9" >Konklúzió</a></h2>
+	<p>A zaj áltak átírt bitek aránya: <b><span id="bits_changed_gcode">0</span>%.</b>
+		A zaj által elrontott írásjelek aránya: <b><span id="letters_changed_gcode">0</span>%.</b></p>
 
-<ul>
-	<li>Az üzenettől és a használt ábécétől is függ a kommunikációnk "hibatűrése", 
-	és ezzel a szükséges hibajavítás mértéke is.</li>
-	<li>Minden hibajavító kódolásnak ára van, nevezetesen hosszabb jelsorozatot kell 
-	továbbítanunk (redundancia). </li>
-	<li>Az ideális kódolási eljárás "skálázható", azaz a paraméterek a kommunikáció
-	egyéb tulajdonságaihoz igazíthatók.</li>
-</ul>
+	<p>Míg a háromszoros ismétlő kód (3 bites) kódszavanként <strong>1</strong>
+		hibát tud kijavítani, a Golay-kód (24 bites) kódszavanként <strong>3</strong> hibát
+		tud javítani.</p>
+
+	<table border=1>
+		<colgroup>
+			<col width="450">
+			<col width="450">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>A zajos kódolt digitalizált szöveg</th>
+				<th>A zajos kódolt szöveg hibajavítás után</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td valign="top"><code><span id="nm_enc_golay">&nbsp;</span></code></td>
+				<td valign="top">
+					<p id="corr_nm_enc_golay">&nbsp;</p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<hr />
+	<h2><a name="F9">Konklúzió</a></h2>
+
+	<ul>
+		<li>Az üzenettől és a használt ábécétől is függ a kommunikációnk "hibatűrése",
+			és ezzel a szükséges hibajavítás mértéke is.</li>
+		<li>Minden hibajavító kódolásnak ára van, nevezetesen hosszabb jelsorozatot kell
+			továbbítanunk (redundancia). </li>
+		<li>Az ideális kódolási eljárás "skálázható", azaz a paraméterek a kommunikáció
+			egyéb tulajdonságaihoz igazíthatók.</li>
+	</ul>
 
 </body>
-</html>
 
+</html>
