@@ -42,7 +42,7 @@
 </style>
 <body onload="draw_list()">
 <h1>Lineáris algebra dinamikus tételsor</h1>
-<h3>2020/2021. tanév I. félév</h3>
+<h3>2021/2022. tanév I. félév</h3>
 
 <div id="list_of_questions"></div>
 <button class="button" onclick="random_question()">Húzz tételt!</button>
@@ -53,6 +53,7 @@
     <li>Aki mégsem akar vizsgázni, az írjon nekem emailt és beírom a jegyét.</li>
     <li>A szóbeli vizsga 20-25 perces, a 25 perc szigorú felső korlát.</li>
     <li>A felkészülési idő ebbe beleszámít.</li>
+    <li>A tételben előforduló definíciókat és állításokat hibátlanul ki kell tudni mondani. A jelesért a tétel bizonyításait is ismerni kell. </li>
 </ul>
 <script>
     var questions = [
@@ -67,8 +68,7 @@
         "A determináns fogalma, képlete",
         "A determináns tulajdonságai, kifejtési tétel",
         "Mátrix sajátértékei és sajátvektorai",
-        "Ortogonális mátrixok",
-        "Mátrix felbontások"
+        "Ortogonális mátrixok, QR-felbontás"
     ];
     function draw_list() {
         var html = "<table>\n";
