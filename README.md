@@ -23,4 +23,4 @@
 * [Jacobi Diagonalization Demo](https://nagygp.github.io/matrix-algorithms/DiagonalizationJacobi.html)
 * [Catenary Curve Demo](https://nagygp.github.io/Demos/Catenary.html)
 * [Error Correcting Codes Demo](https://nagygp.github.io/Demos/coding_demo_en.html)
-* [Linear algebra 2020 exam](https://nagygp.github.io/Exams/exams.html)
+* [Linear algebra (BSc) exam topics](https://nagygp.github.io/Exams/exams.html)
