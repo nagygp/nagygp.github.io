@@ -1,12 +1,6 @@
 ---
-title: "Detailed installation instructions for GAP 4.12.2"
-keywords:
-  - GAP
-  - GAP packages
-  - RightQuasigroups
-  - JupyterKernel
-author:
-  - Gábor P. Nagy
+title: Installation instructions for GAP 4.12.2
+author: Gábor P. Nagy
 ---
 
 
@@ -19,29 +13,6 @@ author:
 
 https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-10#1-overview
 
-### Ubuntu in docker container
-
-Construct (jammy = 22.04, focal = 20.04):
-
-```bash
-docker pull ubuntu:jammy
-docker create -it --name jelly ubuntu:jammy
-docker start jelly
-docker attach jelly
-```
-
-Check container:
-
-```bash
-cat etc/os-release
-sudo apt update && sudo apt upgrade -y
-```
-
-Remove container and delete content:
-
-```bash
-docker rm jelly
-```
 
 ## Install GAP
 
@@ -227,23 +198,5 @@ total     18009 ms (3422 ms GC) and 2.74GB allocated
               0 failures in 14 files
 
 #I  No errors detected while testing
-```
-
-# GAP in Jupyter notebook
-
-Install:
-
-```bash
-sudo apt install python3 pip
-cd ${GAPDIR}/pkg/jupyterkernel
-pip install --user notebook
-pip install . --user
-```
-
-Run and start new notebook with "GAP4" kernel:
-
-```bash
-export JUPYTER_GAP_EXECUTABLE=${GAPDIR}/gap
-jupyter notebook
 ```
 
