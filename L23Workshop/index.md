@@ -9,8 +9,8 @@ author: Gábor P. Nagy
 
 This package implements basic methods for calculations with finite, right quasigroups. Additional methods and libraries are provided, for quasigroups, loops, racks and quandles.
 
-- Website: https://gap-packages.github.io/RightQuasigroups/
-- Repository: https://github.com/gap-packages/RightQuasigroups
+- Website: [https://gap-packages.github.io/RightQuasigroups/](https://gap-packages.github.io/RightQuasigroups/)
+- Repository: [https://github.com/gap-packages/RightQuasigroups](https://github.com/gap-packages/RightQuasigroups)
 
 In the talks, we will present the mathematics of the computation with right quasigroups, and their implementation. 
 
