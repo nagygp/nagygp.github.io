@@ -16,14 +16,14 @@ In the talks, we will present the mathematics of the computation with right quas
 
 ## Talks
 
-- Chapter 1: Introduction to GAP [html](chapter_1_intro_to_GAP_gabor.html)
-- Chapter 2: Constructors [html](chapter_2_constructors_petr.html) [pdf](chapter_2_constructors_petr.pdf)
-- Chapter 3: Libraries [html](chapter_3_libraries_to_GAP_gabor.html)
-- Chapter 4: Universal algebra [html](chapter_4_universal_algebra_petr.html) [pdf](chapter_4_universal_algebra_petr.pdf)
-- Chapter 5: Nilpotency and solvability [html](chapter_5_nilpotency_and_solvability_petr.html) [pdf](chapter_5_nilpotency_and_solvability_petr.pdf)
-- Chapter 6: Racks and quandles [html](chapter_6_racks_and_quandles_petr.html) [pdf](chapter_6_racks_and_quandles_petr.pdf)
-- Chapter 7: Mappings in RightQuasigroups [html](chapter_7_mappings_gabor.html)
-- Chapter 8: Isotopisms and autotopisms [html](chapter_8_topisms_gabor.html)
+- Chapter 1: Introduction to GAP [html](docs/chapter_1_intro_to_GAP_gabor.html)
+- Chapter 2: Constructors [html](docs/chapter_2_constructors_petr.html) [pdf](docs/chapter_2_constructors_petr.pdf)
+- Chapter 3: Libraries [html](docs/chapter_3_libraries_to_GAP_gabor.html)
+- Chapter 4: Universal algebra [html](docs/chapter_4_universal_algebra_petr.html) [pdf](docs/chapter_4_universal_algebra_petr.pdf)
+- Chapter 5: Nilpotency and solvability [html](docs/chapter_5_nilpotency_and_solvability_petr.html) [pdf](docs/chapter_5_nilpotency_and_solvability_petr.pdf)
+- Chapter 6: Racks and quandles [html](docs/chapter_6_racks_and_quandles_petr.html) [pdf](docs/chapter_6_racks_and_quandles_petr.pdf)
+- Chapter 7: Mappings in RightQuasigroups [html](docs/chapter_7_mappings_gabor.html)
+- Chapter 8: Isotopisms and autotopisms [html](docs/chapter_8_topisms_gabor.html)
 
 
 ## Install GAP and the **RightQuasigroup** package
