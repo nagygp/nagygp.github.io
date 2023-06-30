@@ -9,13 +9,13 @@ author: Gábor P. Nagy
 
 ## Option 1: Windows Subsystem for Linux (WSL)
 
-* Insall Ubuntu Linux on Windows 10/11 as given here:
+* Install Ubuntu Linux on Windows 10/11 as given in this tutorial:
   
   [install-ubuntu-on-wsl2-on-windows-10](https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-10#1-overview)
 * The process is not complicated, but it may take up to 1 hour. 
 * You need administrator access.
 
-Once complete, you install **GAP** and **RightQuasigrous** precisely in the same way as for [Ubuntu.](./install_ubuntu.html)
+Once complete, you install **GAP** and **RightQuasigrous** precisely in the [same way as for Ubuntu.](./install_ubuntu.html)
 
 ## Option 2: Cygwin
 
