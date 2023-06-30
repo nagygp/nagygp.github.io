@@ -10,18 +10,20 @@ author: Gábor P. Nagy
 ## Option 1: Windows Subsystem for Linux (WSL)
 
 * Insall Ubuntu Linux on Windows 10/11 as given here:
-  https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-10#1-overview
-* The process is not complicated, but take up to 1 hours. 
+  
+  [install-ubuntu-on-wsl2-on-windows-10](https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-10#1-overview)
+* The process is not complicated, but it may take up to 1 hour. 
 * You need administrator access.
 
-Once complete, you install **GAP** and **RightQuasigrous** precisely in the same way as for [./install_ubuntu.html](Ubuntu.)
+Once complete, you install **GAP** and **RightQuasigrous** precisely in the same way as for [Ubuntu.](./install_ubuntu.html)
 
 ## Option 2: Cygwin
 
 ### Install GAP
 
 * Use of the following `.exe` installer, which contains GAP and selected GAP packages.
-  [https://github.com/gap-system/gap/releases/download/v4.12.2/gap-4.12.2-x86_64.exe](gap-4.12.2-x86_64.exe)
+  
+  [gap-4.12.2-x86_64.exe](https://github.com/gap-system/gap/releases/download/v4.12.2/gap-4.12.2-x86_64.exe)
 * The path to the GAP directory should not contain spaces. We recommend to install GAP in C:\gap-4.12.2 (default), D:\gap-4.12.2 or C:\Math\GAP\gap-4.12.2, but you must not install it in a directory named like C:\Program files\gap-4.12.2 or C:\Users\alice\My Documents\gap-4.12.2 etc.
 
 
@@ -35,7 +37,7 @@ __Caution:__ Not tested.
 
 * Create a directory `pkg` in your home directory
 * Click
-[https://github.com/gap-packages/RightQuasigroups/releases/download/v0.9/RightQuasigroups-0.9.tar.gz](RightQuasigroups-0.9.tar.gz)
+[RightQuasigroups-0.9.tar.gz](https://github.com/gap-packages/RightQuasigroups/releases/download/v0.9/RightQuasigroups-0.9.tar.gz)
 * Extract in `pkg` in your home directory
 
 
