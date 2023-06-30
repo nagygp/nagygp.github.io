@@ -5,6 +5,11 @@ author: Gábor P. Nagy
 
 # Workshop on GAP package RightQuasigroups
 
+Speakers:
+
+* [Gábor P. Nagy](https://www.math.u-szeged.hu/~nagyg), University of Szeged, Hungary.
+* [Petr Vojtěchovský](http://www.math.du.edu/~petr/), University of Denver, Colorado, USA.
+
 ## About the lectures
 
 This package implements basic methods for calculations with finite, right quasigroups. Additional methods and libraries are provided, for quasigroups, loops, racks and quandles.
@@ -25,6 +30,10 @@ In the talks, we will present the mathematics of the computation with right quas
 - Chapter 7: Mappings in RightQuasigroups [html](docs/chapter_7_mappings_gabor.html)
 - Chapter 8: Isotopisms and autotopisms [html](docs/chapter_8_topisms_gabor.html)
 
+
+## Notes
+
+- Gábor P. Nagy, Petr Vojtěchovský. Some results used by the __GAP__ package **RightQuasigroups**. 2023. [pdf](docs/workshop_gap.pdf)
 
 ## Install GAP and the **RightQuasigroup** package
 
