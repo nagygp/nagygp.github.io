@@ -1,11 +1,11 @@
 ---
-title: Install  GAP on Windows
+title: Install GAP on Windows
 author: Gábor P. Nagy
 ---
 
 
 
-# Install GAP and RightQuasigrous on Windows
+# Install GAP on Windows
 
 ## Option 1: Windows Subsystem for Linux (WSL)
 
@@ -15,50 +15,39 @@ author: Gábor P. Nagy
 * The process is not complicated, but it may take up to 1 hour. 
 * You need administrator access.
 
-Once complete, you install **GAP** and **RightQuasigrous** precisely in the [same way as for Ubuntu.](./install_ubuntu.html)
+Once completed, you install **GAP** and **RightQuasigrous** precisely in the [same way as for Ubuntu.](./install_ubuntu.html)
 
-## Option 2: Cygwin
+## Option 2: `.exe` installer (Cygwin)
 
 ### Install GAP
 
 * Use of the following `.exe` installer, which contains GAP and selected GAP packages.
   
   [gap-4.12.2-x86_64.exe](https://github.com/gap-system/gap/releases/download/v4.12.2/gap-4.12.2-x86_64.exe)
-* The path to the GAP directory should not contain spaces. We recommend to install GAP in C:\gap-4.12.2 (default), D:\gap-4.12.2 or C:\Math\GAP\gap-4.12.2, but you must not install it in a directory named like C:\Program files\gap-4.12.2 or C:\Users\alice\My Documents\gap-4.12.2 etc.
+* The path to the GAP directory should not contain spaces. We recommend to install GAP in `C:\gap-4.12.2` (default), `D:\gap-4.12.2` or `C:\Math\GAP\gap-4.12.2`, but you must not install it in a directory named like `C:\Program files\gap-4.12.2` or `C:\Users\alice\My Documents\gap-4.12.2` etc.
 
 
-You can start GAP by ...
+You can start GAP by double clicking the `GAP` icon.
 
 # Install RightQuasigroups
 
 ## The "windows" way
 
-__Caution:__ Not tested.
-
-* Create a directory `pkg` in your home directory
-* Click
-[RightQuasigroups-0.9.tar.gz](https://github.com/gap-packages/RightQuasigroups/releases/download/v0.9/RightQuasigroups-0.9.tar.gz)
-* Extract in `pkg` in your home directory
+* Create a directory `_gap`  in your home directory, and the subdirectory `pkg` in `_gap`.
+* Download the package by clicking
+[RightQuasigroups-0.9.tar.gz](https://github.com/gap-packages/RightQuasigroups/releases/download/v0.9/RightQuasigroups-0.9.tar.gz).
+* Extract in the `_gap\pkg` directory.
 
 
 ## Using `PackageManager`
 
-__Caution:__ This is not working since file names (in /temp and /old versions) contain spaces
+__Caution:__ This is not working yet since file names (in /temp and /old versions) contain spaces
+
+Start __GAP__ and type:
 
 ```
-LoadPackage("packagem");
-InstallPackage("https://github.com/gap-packages/RightQuasigroups/releases/download/v0.9/RightQuasigroups-0.9.tar.gz");
-```
-
-## From the terminal
-
-Download and extract:
-
-```bash
-cd ${GAPDIR}/pkg
-wget https://github.com/gap-packages/RightQuasigroups/releases/download/v0.9/RightQuasigroups-0.9.tar.gz
-tar -xzvf RightQuasigroups-0.9.tar.gz
-rm RightQuasigroups-0.9.tar.gz
+gap> LoadPackage( "PackageManager" );
+gap> InstallPackage( "https://github.com/gap-packages/RightQuasigroups/releases/download/v0.9/RightQuasigroups-0.9.tar.gz" );
 ```
 
 # Test
