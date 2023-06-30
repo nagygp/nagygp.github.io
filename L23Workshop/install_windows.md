@@ -35,7 +35,7 @@ You can start GAP by double clicking the `GAP` icon.
 
 * Create a directory `_gap`  in your home directory, and the subdirectory `pkg` in `_gap`.
 * Download the package by clicking
-[RightQuasigroups-0.9.tar.gz](https://github.com/gap-packages/RightQuasigroups/releases/download/v0.9/RightQuasigroups-0.9.tar.gz).
+[RightQuasigroups-0.9.1.tar.gz](https://github.com/gap-packages/RightQuasigroups/releases/download/v0.9.1/RightQuasigroups-0.9.1.tar.gz).
 * Extract in the `_gap\pkg` directory.
 
 
@@ -47,7 +47,7 @@ Start __GAP__ and type:
 
 ```
 gap> LoadPackage( "PackageManager" );
-gap> InstallPackage( "https://github.com/gap-packages/RightQuasigroups/releases/download/v0.9/RightQuasigroups-0.9.tar.gz" );
+gap> InstallPackage( "https://github.com/gap-packages/RightQuasigroups/releases/download/v0.9.1/RightQuasigroups-0.9.1.tar.gz" );
 ```
 
 # Test
@@ -132,33 +132,33 @@ Report issues at https://github.com/gap-packages/RightQuasigroups/issues
 ---------------------------------------------------------------------------------------------------------------------------------
 Architecture: x86_64-pc-linux-gnu-default64-kv8
 
-testing: /root/gapdir/pkg/RightQuasigroups-0.9/tst/CoreMethods.tst
+testing: /root/gapdir/pkg/RightQuasigroups-0.9.1/tst/CoreMethods.tst
      157 ms (54 ms GC) and 14.6MB allocated for CoreMethods.tst
-testing: /root/gapdir/pkg/RightQuasigroups-0.9/tst/Elements.tst
+testing: /root/gapdir/pkg/RightQuasigroups-0.9.1/tst/Elements.tst
       60 ms (53 ms GC) and 632KB allocated for Elements.tst
-testing: /root/gapdir/pkg/RightQuasigroups-0.9/tst/rightquasigroups01.tst
+testing: /root/gapdir/pkg/RightQuasigroups-0.9.1/tst/rightquasigroups01.tst
       65 ms (48 ms GC) and 2.46MB allocated for rightquasigroups01.tst
-testing: /root/gapdir/pkg/RightQuasigroups-0.9/tst/rightquasigroups02.tst
+testing: /root/gapdir/pkg/RightQuasigroups-0.9.1/tst/rightquasigroups02.tst
     5533 ms (1497 ms GC) and 862MB allocated for rightquasigroups02.tst
-testing: /root/gapdir/pkg/RightQuasigroups-0.9/tst/rightquasigroups03.tst
+testing: /root/gapdir/pkg/RightQuasigroups-0.9.1/tst/rightquasigroups03.tst
     7047 ms (391 ms GC) and 1.21GB allocated for rightquasigroups03.tst
-testing: /root/gapdir/pkg/RightQuasigroups-0.9/tst/rightquasigroups04.tst
+testing: /root/gapdir/pkg/RightQuasigroups-0.9.1/tst/rightquasigroups04.tst
      162 ms (119 ms GC) and 6.99MB allocated for rightquasigroups04.tst
-testing: /root/gapdir/pkg/RightQuasigroups-0.9/tst/rightquasigroups05.tst
+testing: /root/gapdir/pkg/RightQuasigroups-0.9.1/tst/rightquasigroups05.tst
      590 ms (134 ms GC) and 83.0MB allocated for rightquasigroups05.tst
-testing: /root/gapdir/pkg/RightQuasigroups-0.9/tst/rightquasigroups06.tst
+testing: /root/gapdir/pkg/RightQuasigroups-0.9.1/tst/rightquasigroups06.tst
     1177 ms (124 ms GC) and 55.2MB allocated for rightquasigroups06.tst
-testing: /root/gapdir/pkg/RightQuasigroups-0.9/tst/rightquasigroups07.tst
+testing: /root/gapdir/pkg/RightQuasigroups-0.9.1/tst/rightquasigroups07.tst
      121 ms (118 ms GC) and 232KB allocated for rightquasigroups07.tst
-testing: /root/gapdir/pkg/RightQuasigroups-0.9/tst/rightquasigroups08.tst
+testing: /root/gapdir/pkg/RightQuasigroups-0.9.1/tst/rightquasigroups08.tst
     1495 ms (139 ms GC) and 187MB allocated for rightquasigroups08.tst
-testing: /root/gapdir/pkg/RightQuasigroups-0.9/tst/rightquasigroups09.tst
+testing: /root/gapdir/pkg/RightQuasigroups-0.9.1/tst/rightquasigroups09.tst
      851 ms (337 ms GC) and 245MB allocated for rightquasigroups09.tst
-testing: /root/gapdir/pkg/RightQuasigroups-0.9/tst/rightquasigroups10.tst
+testing: /root/gapdir/pkg/RightQuasigroups-0.9.1/tst/rightquasigroups10.tst
      196 ms (132 ms GC) and 5.06MB allocated for rightquasigroups10.tst
-testing: /root/gapdir/pkg/RightQuasigroups-0.9/tst/rightquasigroups11.tst
+testing: /root/gapdir/pkg/RightQuasigroups-0.9.1/tst/rightquasigroups11.tst
      379 ms (149 ms GC) and 88.5MB allocated for rightquasigroups11.tst
-testing: /root/gapdir/pkg/RightQuasigroups-0.9/tst/rightquasigroups12.tst
+testing: /root/gapdir/pkg/RightQuasigroups-0.9.1/tst/rightquasigroups12.tst
      176 ms (127 ms GC) and 8.25MB allocated for rightquasigroups12.tst
 -----------------------------------
 total     18009 ms (3422 ms GC) and 2.74GB allocated
