@@ -1,78 +1,54 @@
 ---
-title: Installation instructions for GAP 4.12.2
+title: Install  GAP on Windows
 author: Gábor P. Nagy
 ---
 
 
 
-# Detailed installation instructions for GAP 4.12.2 and the packages
+# Install GAP and RightQuasigrous on Windows
 
-## Install Ubuntu linux 
+## Option 1: Windows Subsystem for Linux (WSL)
 
-### Ubuntu on Windows 10/11
+* Insall Ubuntu Linux on Windows 10/11 as given here:
+  https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-10#1-overview
+* The process is not complicated, but take up to 1 hours. 
+* You need administrator access.
 
-https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-10#1-overview
+Once complete, you install **GAP** and **RightQuasigrous** precisely in the same way as for [./install_ubuntu.html](Ubuntu.)
+
+## Option 2: Cygwin
+
+### Install GAP
+
+* Use of the following `.exe` installer, which contains GAP and selected GAP packages.
+  [https://github.com/gap-system/gap/releases/download/v4.12.2/gap-4.12.2-x86_64.exe](gap-4.12.2-x86_64.exe)
+* The path to the GAP directory should not contain spaces. We recommend to install GAP in C:\gap-4.12.2 (default), D:\gap-4.12.2 or C:\Math\GAP\gap-4.12.2, but you must not install it in a directory named like C:\Program files\gap-4.12.2 or C:\Users\alice\My Documents\gap-4.12.2 etc.
 
 
-## Install GAP
+You can start GAP by ...
 
-Choose the name of the main GAP directory and create it:
+# Install RightQuasigroups
 
-```bash
-export GAPDIR="$HOME/gapdir"
-mkdir ${GAPDIR}
+## The "windows" way
+
+__Caution:__ Not tested.
+
+* Create a directory `pkg` in your home directory
+* Click
+[https://github.com/gap-packages/RightQuasigroups/releases/download/v0.9/RightQuasigroups-0.9.tar.gz](RightQuasigroups-0.9.tar.gz)
+* Extract in `pkg` in your home directory
+
+
+## Using `PackageManager`
+
+__Caution:__ This is not working since file names (in /temp and /old versions) contain spaces
+
+```
+LoadPackage("packagem");
+InstallPackage("https://github.com/gap-packages/RightQuasigroups/releases/download/v0.9/RightQuasigroups-0.9.tar.gz");
 ```
 
-Install the necessary packages for building the system:
-
-```bash
-sudo apt update
-sudo apt install build-essential autoconf libtool libgmp-dev libreadline-dev zlib1g-dev libzmq3-dev libcurl4-gnutls-dev libcdd-dev 
-sudo apt install mc wget
-```
-
-Install GAP:
-
-```bash
-export GAPVERSION=4.12.2
-cd /tmp
-wget https://github.com/gap-system/gap/releases/download/v${GAPVERSION}/gap-${GAPVERSION}.tar.gz
-tar -xzvf gap-${GAPVERSION}.tar.gz
-rm -Rf ${GAPDIR}/*
-mv /tmp/gap-${GAPVERSION}/* ${GAPDIR}
-rm gap-${GAPVERSION}.tar.gz
-cd ${GAPDIR}
-./configure; make
-```
-
-Build the packages (this takes a few minutes):
-
-```bash
-cd ${GAPDIR}/pkg
-../bin/BuildPackages.sh
-more ./log/fail.log 
-```
-
-You can start GAP by typing
-
-```bash
-${GAPDIR}/gap
-```
-
-Put the GAP directory in your search path:
-
-```bash
-export PATH=${PATH}:${GAPDIR}
-```
-
-Or, create a symbolic link or an alias
-
-```bash
-ln -s ${GAPDIR}/gap ${HOME}/gap
-alias gap="${GAPDIR}/gap"
-```
-
-## Install RightQuasigroups
+## From the terminal
 
 Download and extract:
 
@@ -83,7 +59,7 @@ tar -xzvf RightQuasigroups-0.9.tar.gz
 rm RightQuasigroups-0.9.tar.gz
 ```
 
-## Test
+# Test
 
 Start GAP and type `TestPackage("rightquasigroups");` You should get something like this:
 

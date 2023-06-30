@@ -28,7 +28,8 @@ In the talks, we will present the mathematics of the computation with right quas
 
 ## Install GAP and the **RightQuasigroup** package
 
-- [Instructions](./install.html)
+- [Instructions for Windows](./install_windows.html)
+- [Instructions for Ubuntu/MacOS](./install_ubuntu.html)
 
 ## For experts
 
