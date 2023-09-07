@@ -28,4 +28,4 @@
 
 ## LOOPS 2023 workshop
 
-* [GAP install instructions](https://nagygp.github.io/LOOPS2023)
+* [GAP install instructions](https://nagygp.github.io/L23Workshop)
