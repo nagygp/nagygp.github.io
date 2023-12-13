@@ -15,78 +15,85 @@
 </head>
 <style>
     table {
-      border-collapse: collapse;
-      width: 100%;
-      background-color: rgb(235, 235, 235);
+        border-collapse: collapse;
+        width: 100%;
+        background-color: rgb(235, 235, 235);
     }
-    
-    th, td {
-      padding: 8px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
+
+    th,
+    td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
     }
-    
-    tr:hover {background-color:#999999;}
+
+    tr:hover {
+        background-color: #999999;
+    }
+
     .button {
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-}
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
 </style>
+
 <body onload="draw_list()">
-<h1>Lineáris algebra dinamikus tételsor</h1>
-<h3>2022/2023. tanév I. félév</h3>
+    <h1>Lineáris algebra dinamikus tételsor</h1>
+    <h3>2023/2024. tanév I. félév</h3>
 
-<div id="list_of_questions"></div>
-<button class="button" onclick="random_question()">Húzz tételt!</button>
+    <div id="list_of_questions"></div>
+    <button class="button" onclick="random_question()">Húzz tételt!</button>
 
-<h3>Tudnivalók</h3>
-<ul>
-    <li>A szóbeli vizsgán a megajánlott jegyet csak javítani lehet, rontani nem.</li>
-    <li>Aki mégsem akar vizsgázni, az írjon nekem emailt és beírom a jegyét.</li>
-    <li>A szóbeli vizsga 20-25 perces, a 25 perc szigorú felső korlát.</li>
-    <li>A felkészülési idő ebbe beleszámít.</li>
-    <li>A tételben előforduló definíciókat és állításokat hibátlanul ki kell tudni mondani. A jelesért a tétel bizonyításait is ismerni kell. </li>
-</ul>
-<script>
-    var questions = [
-        "Lineáris egyenletletrendszerek, Gauss-módszer",
-        "Gauss-Jordan módszer, megoldáshalmaz megadása",
-        "Absztrakt vektorterek, lineáris függetlenség",
-        "Bázis, dimenzió, kicserélési tétel",
-        "Lineáris leképezések, lineáris leképezések összege és szorzata",
-        "Lineáris leképezések mátrix alakja, mátrixok összege és szorzata, speciális alakú mátrixok",
-        "Mátrixok inverze, nem-elfajuló mátrixok",
-        "A determináns fogalma, képlete",
-        "A determináns tulajdonságai, kifejtési tétel",
-        "Mátrix sajátértékei és sajátvektorai",
-        "Alkalmazások: Térgeometria, transzformációk, Fibonacci-sorozat"
-    ];
-    function draw_list() {
-        var html = "<table>\n";
-        for (var i=0; i<questions.length; i++) {
-            html += "<tr id=\"line" + i + "\">";
-            html += "<td>" + (i+1) + ".</td>";
-            html += "<td>" + questions[i] + "</td>";
-            html += "</tr>\n";
+    <h3>Tudnivalók</h3>
+    <ul>
+        <li>A szóbeli vizsgán a megajánlott jegyet csak javítani lehet, rontani nem.</li>
+        <li>Aki mégsem akar vizsgázni, az írjon nekem emailt és beírom a jegyét.</li>
+        <li>A szóbeli vizsga 20-25 perces, a 25 perc szigorú felső korlát.</li>
+        <li>A felkészülési idő ebbe beleszámít.</li>
+        <li>A tételben előforduló definíciókat és állításokat hibátlanul ki kell tudni mondani. A jelesért a tétel
+            bizonyításait is ismerni kell. </li>
+    </ul>
+    <script>
+        var questions = [
+            "Lineáris egyenletletrendszerek, Gauss-módszer",
+            "Gauss-Jordan módszer, megoldáshalmaz megadása",
+            "Absztrakt vektorterek, lineáris függetlenség",
+            "Bázis, dimenzió, kicserélési tétel",
+            "Lineáris leképezések, lineáris leképezések összege és szorzata",
+            "Lineáris leképezések mátrix alakja, mátrixok összege és szorzata, speciális alakú mátrixok",
+            "Mátrixok inverze, nem-elfajuló mátrixok",
+            "A determináns fogalma, képlete",
+            "A determináns tulajdonságai, kifejtési tétel",
+            "Mátrix sajátértékei és sajátvektorai",
+            "Alkalmazások: Térgeometria, transzformációk, Fibonacci-sorozat"
+        ];
+        function draw_list() {
+            var html = "<table>\n";
+            for (var i = 0; i < questions.length; i++) {
+                html += "<tr id=\"line" + i + "\">";
+                html += "<td>" + (i + 1) + ".</td>";
+                html += "<td>" + questions[i] + "</td>";
+                html += "</tr>\n";
+            }
+            html += "</table>\n";
+            document.getElementById("list_of_questions").innerHTML = html;
         }
-        html += "</table>\n";
-        document.getElementById("list_of_questions").innerHTML = html;
-    }
-    function random_question() {
-        for (var i=0; i<questions.length; i++) {
-            document.getElementById("line"+i).style.backgroundColor = "initial";
+        function random_question() {
+            for (var i = 0; i < questions.length; i++) {
+                document.getElementById("line" + i).style.backgroundColor = "initial";
+            }
+            var k = Math.floor(Math.random() * Math.floor(questions.length));
+            document.getElementById("line" + k).style.backgroundColor = "#4CAF50";
         }
-        var k = Math.floor(Math.random() * Math.floor(questions.length));
-        document.getElementById("line"+k).style.backgroundColor = "#4CAF50";
-    }
-</script>
+    </script>
 </body>
+
 </html>
